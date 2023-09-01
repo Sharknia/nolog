@@ -5,3 +5,5 @@ node_modules
 *.js.map
 
 /dist/
+
+*.log

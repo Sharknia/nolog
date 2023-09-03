@@ -29,7 +29,31 @@ class NotionToMarkdown {
 
     public async queryDatabase(): Promise<QueryDatabaseResponse> {
         try {
-            const response = await this.notion.databases.query({ database_id: this.databaseId });
+            const response = await this.notion.databases.query({
+                database_id: this.databaseId,
+                filter: {
+                    and: [
+                        {
+                            property: '상태',
+                            select: {
+                                equals: "POST",
+                            },
+                        },
+                        {
+                            property: 'update',
+                            date: {
+                                on_or_after: "2023-09-03",
+                            },
+                        },
+                    ],
+                },
+                sorts: [
+                    {
+                        property: 'update',
+                        direction: 'descending',
+                    },
+                ],
+            });
             return response;
         } catch (error) {
             console.error("Error querying the database:", error);
@@ -55,5 +79,5 @@ class NotionToMarkdown {
 
 // 사용 예제:
 NotionToMarkdown.create().then(handler => {
-    console.log(handler.database);  // database 속성 출력
+    console.log(JSON.stringify(handler.database, null, 2));  // database 속성 출력
 });

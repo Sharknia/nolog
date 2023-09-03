@@ -48,7 +48,7 @@ class DataBase {
         try {
             const response = await this.notion.databases.query({
                 database_id: this.databaseId,
-                filter: this.filter,
+                // filter: this.filter,
                 sorts: [
                     {
                         property: 'update',

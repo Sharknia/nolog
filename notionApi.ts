@@ -3,14 +3,14 @@ import { Client } from "@notionhq/client";
 
 dotenv.config();
 
-const pageId: string | undefined = process.env.NOTION_PAGE_ID;
+const databaseId: string | undefined = process.env.NOTION_DATABASE_ID;
 const key: string | undefined = process.env.NOTION_KEY;
 
 const notion = new Client({ auth: key });
 
 (async () => {
     try {
-        const response = await notion.databases.query({ database_id: pageId! });  // '!'는 값이 undefined가 아님을 확신할 때 사용
+        const response = await notion.databases.query({ database_id: databaseId! });  // '!'는 값이 undefined가 아님을 확신할 때 사용
         response.results.forEach(page => {
             (async () => {
                 const pageId: string = page.id;

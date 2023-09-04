@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@notionhq/client": "^2.2.12",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.5.9",
     "dotenv": "^16.3.1"
   },
   "keywords": []

@@ -28,12 +28,11 @@ export class DataBase {
                 throw new Error("NOTION_KEY or NOTION_DATABASE_ID is missing in the environment variables.");
             }
 
-            let notionApi = await NotionAPI.create(notionkey);
-            const notion = notionApi.client;
-            
-            this.instance = new DataBase(notion, databaseid);
+            const notionApi: NotionAPI = await NotionAPI.create(notionkey);
+
+            this.instance = new DataBase(notionApi.client, databaseid);
             if (filterUdate === "lastest") {
-                const today = new Date();
+                const today: Date = new Date();
                 today.setDate(today.getDate() - 1);
                 filterUdate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
             }
@@ -44,7 +43,7 @@ export class DataBase {
 
     public async queryDatabase(filterUdate?: string): Promise<QueryDatabaseResponse> {
         try {
-            const response = await this.notion.databases.query({
+            const response: QueryDatabaseResponse = await this.notion.databases.query({
                 database_id: this.databaseId,
                 filter: {
                     and: [

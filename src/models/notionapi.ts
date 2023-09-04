@@ -8,8 +8,11 @@ export class NotionAPI {
         this.client = new Client({ auth: notionKey });
     }
 
-    public static async create(notionKey: string) {
+    public static async create(notionKey: string = "") {
         if (!this.instance) {
+            if (!notionKey) {
+                throw new Error("NOTION_KE is missing");
+            }
             this.instance = new NotionAPI(notionKey);
         }
         return this.instance;

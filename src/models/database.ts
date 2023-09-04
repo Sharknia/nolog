@@ -1,9 +1,11 @@
 import { Client } from "@notionhq/client";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import * as dotenv from "dotenv";
-
+import { NotionAPI } from "./notionapi";
 
 export class DataBase {
+    private static instance: DataBase | null = null;
+
     private notion: Client;
     private databaseId: string;
     public database: QueryDatabaseResponse;
@@ -17,25 +19,27 @@ export class DataBase {
     }
 
     public static async create(filterUdate?: string): Promise<DataBase> {
-        dotenv.config({ path: `${__dirname}/../../.env` });
-        const notionkey: string = process.env.NOTION_KEY || "";
-        const databaseid: string = process.env.NOTION_DATABASE_ID || "";
+        if (!this.instance) {
+            dotenv.config({ path: `${__dirname}/../../.env` });
+            const notionkey: string = process.env.NOTION_KEY || "";
+            const databaseid: string = process.env.NOTION_DATABASE_ID || "";
 
-        if (!notionkey || !databaseid) {
-            throw new Error("NOTION_KEY or NOTION_DATABASE_ID is missing in the environment variables.");
+            if (!notionkey || !databaseid) {
+                throw new Error("NOTION_KEY or NOTION_DATABASE_ID is missing in the environment variables.");
+            }
+
+            let notionApi = await NotionAPI.create(notionkey);
+            const notion = notionApi.client;
+            
+            this.instance = new DataBase(notion, databaseid);
+            if (filterUdate === "lastest") {
+                const today = new Date();
+                today.setDate(today.getDate() - 1);
+                filterUdate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            }
+            this.instance.database = await this.instance.queryDatabase(filterUdate);
         }
-
-        const notion = new Client({ auth: notionkey });
-        const instance = new DataBase(notion, databaseid);
-        if (filterUdate == "lastest") {
-            const today = new Date(); // 현재 날짜와 시간을 가져옵니다.
-            today.setDate(today.getDate() - 1); // 날짜를 하루 전으로 설정합니다.
-
-            // YYYY-MM-DD 형식의 문자열로 날짜를 가져옵니다.
-            filterUdate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-        }
-        instance.database = await instance.queryDatabase(filterUdate);
-        return instance;
+        return this.instance;
     }
 
     public async queryDatabase(filterUdate?: string): Promise<QueryDatabaseResponse> {

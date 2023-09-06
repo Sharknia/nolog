@@ -1,7 +1,6 @@
 import { DataBase } from "./database";
 import { NotionAPI } from "../utils/notionapi";
 import { EnvConfig } from "../utils/envConfig";
-import { Client } from "@notionhq/client";
 
 export class Posting {
     public pageIds: { pageId: string }[] = [];

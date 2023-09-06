@@ -1,4 +1,5 @@
 import { DataBase } from "./database";
+import { Page } from "./page";
 import { NotionAPI } from "../utils/notionapi";
 import { EnvConfig } from "../utils/envConfig";
 
@@ -26,7 +27,12 @@ export class Posting {
             const databaseid: string = this.EnvConfig.databaseid || "";
             this.notionApi = await NotionAPI.create(notionkey);
             this.dbInstance = await DataBase.create(databaseid);
-            console.log(this.dbInstance.pageIds);
+
+            for (const item of this.dbInstance.pageIds) {
+                const page: Page = await Page.create(item.pageId);
+                console.log(page.pageTitle);
+                console.log(page.properties);
+            }
         } catch (error) {
             console.error("Error creating database instance:", error);
         }

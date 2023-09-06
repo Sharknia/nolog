@@ -11,7 +11,7 @@ export class NotionAPI {
     public static async create(notionKey: string = "") {
         if (!this.instance) {
             if (!notionKey) {
-                throw new Error("NOTION_KE is missing");
+                throw new Error("NOTION_KEY is missing");
             }
             this.instance = new NotionAPI(notionKey);
         }

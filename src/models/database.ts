@@ -1,7 +1,6 @@
 import { Client } from "@notionhq/client";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionAPI } from "../utils/notionapi";
-import { EnvConfig } from "../utils/envConfig";
 
 export class DataBase {
     private static instance: DataBase | null = null;

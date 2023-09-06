@@ -1,7 +1,7 @@
 import { NotionAPI } from "../utils/notionapi";
 import { Client } from "@notionhq/client";
 import { PropertyValue } from './types';
-import { GetPageResponse, PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { GetPageResponse } from "@notionhq/client/build/src/api-endpoints";
 
 
 export class Page {

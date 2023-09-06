@@ -18,17 +18,9 @@ export class DataBase {
         this.database = {} as QueryDatabaseResponse;
     }
 
-    public static async create(filterUdate?: string): Promise<DataBase> {
+    public static async create(databaseid:string, filterUdate?: string): Promise<DataBase> {
         if (!this.instance) {
-            const envConfig: EnvConfig = EnvConfig.create();
-            const notionkey: string = envConfig.notionKey || "";
-            const databaseid: string = envConfig.databaseid || "";
-
-            if (!notionkey || !databaseid) {
-                throw new Error("NOTION_KEY or NOTION_DATABASE_ID is missing in the environment variables.");
-            }
-
-            const notionApi: NotionAPI = await NotionAPI.create(notionkey);
+            const notionApi: NotionAPI = await NotionAPI.create();
 
             this.instance = new DataBase(notionApi.client, databaseid);
             if (filterUdate === "lastest") {

@@ -9,7 +9,7 @@ export class EnvConfig {
     private constructor() {
         dotenv.config({ path: `${__dirname}/../../.env` });
         this.notionKey = process.env.NOTION_KEY || "";
-        this.notionKey = process.env.NOTION_DATABASE_ID || "";
+        this.databaseid = process.env.NOTION_DATABASE_ID || "";
     }
 
     public static create() {

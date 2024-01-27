@@ -1,7 +1,7 @@
-import { DataBase } from "./database";
-import { Page } from "./page";
-import { NotionAPI } from "../utils/notionapi";
-import { EnvConfig } from "../utils/envConfig";
+import { DataBase } from './database';
+import { Page } from './page';
+import { NotionAPI } from '../utils/notionapi';
+import { EnvConfig } from '../utils/envConfig';
 
 export class Posting {
     public pageIds: { pageId: string }[] = [];
@@ -11,7 +11,7 @@ export class Posting {
     public notionApi?: NotionAPI;
     public EnvConfig?: EnvConfig;
 
-    private constructor() { }
+    private constructor() {}
 
     public static create(): Posting {
         if (!this.instance) {
@@ -23,8 +23,8 @@ export class Posting {
     public async start(): Promise<void> {
         try {
             this.EnvConfig = EnvConfig.create();
-            const notionkey: string = this.EnvConfig.notionKey || "";
-            const databaseid: string = this.EnvConfig.databaseid || "";
+            const notionkey: string = this.EnvConfig.notionKey || '';
+            const databaseid: string = this.EnvConfig.databaseid || '';
             this.notionApi = await NotionAPI.create(notionkey);
             this.dbInstance = await DataBase.create(databaseid);
 
@@ -34,7 +34,7 @@ export class Posting {
                 console.log(page.properties);
             }
         } catch (error) {
-            console.error("Error creating database instance:", error);
+            console.error('Error creating database instance:', error);
         }
     }
 }

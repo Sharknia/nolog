@@ -1,6 +1,6 @@
-import * as dotenv from "dotenv";
-import { Client } from "@notionhq/client";
-import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
+import * as dotenv from 'dotenv';
+import { Client } from '@notionhq/client';
+import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 
 class NotionToMarkdown {
     private notion: Client;
@@ -17,11 +17,14 @@ class NotionToMarkdown {
         dotenv.config();
 
         if (!process.env.NOTION_KEY || !process.env.NOTION_DATABASE_ID) {
-            throw new Error("Environment variable is not defined.");
+            throw new Error('Environment variable is not defined.');
         }
 
         const notion = new Client({ auth: process.env.NOTION_KEY });
-        const instance = new NotionToMarkdown(notion, process.env.NOTION_DATABASE_ID);
+        const instance = new NotionToMarkdown(
+            notion,
+            process.env.NOTION_DATABASE_ID,
+        );
         instance.database = await instance.queryDatabase();
 
         return instance;
@@ -36,13 +39,13 @@ class NotionToMarkdown {
                         {
                             property: '상태',
                             select: {
-                                equals: "POST",
+                                equals: 'POST',
                             },
                         },
                         {
                             property: 'update',
                             date: {
-                                on_or_after: "2023-09-03",
+                                on_or_after: '2023-09-03',
                             },
                         },
                     ],
@@ -56,14 +59,16 @@ class NotionToMarkdown {
             });
             return response;
         } catch (error) {
-            console.error("Error querying the database:", error);
+            console.error('Error querying the database:', error);
             throw error;
         }
     }
 
     private async retrievePage(pageId: string): Promise<void> {
-        const pageResponse = await this.notion.pages.retrieve({ page_id: pageId });
-        console.log("----------Page Properties----------");
+        const pageResponse = await this.notion.pages.retrieve({
+            page_id: pageId,
+        });
+        console.log('----------Page Properties----------');
         console.log(JSON.stringify(pageResponse, null, 2));
     }
 
@@ -72,12 +77,12 @@ class NotionToMarkdown {
             block_id: blockId,
             page_size: 50,
         });
-        console.log("----------Page Block List----------");
+        console.log('----------Page Block List----------');
         console.log(JSON.stringify(childrenListResponse, null, 2));
     }
 }
 
 // 사용 예제:
-NotionToMarkdown.create().then(handler => {
-    console.log(JSON.stringify(handler.database, null, 2));  // database 속성 출력
+NotionToMarkdown.create().then((handler) => {
+    console.log(JSON.stringify(handler.database, null, 2)); // database 속성 출력
 });

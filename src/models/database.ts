@@ -1,6 +1,6 @@
-import * as dotenv from "dotenv";
-import { Client } from "@notionhq/client";
-import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
+import * as dotenv from 'dotenv';
+import { Client } from '@notionhq/client';
+import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 
 class DataBase {
     private notion: Client;
@@ -9,10 +9,14 @@ class DataBase {
 
     filter: Filter;
 
-    //데이터베이스는 Pages의 리스트를 담고 있다. 
-    public list: string = "Default Title";
+    //데이터베이스는 Pages의 리스트를 담고 있다.
+    public list: string = 'Default Title';
 
-    private constructor(notion: Client, databaseId: string, filterUdate?: string) {
+    private constructor(
+        notion: Client,
+        databaseId: string,
+        filterUdate?: string,
+    ) {
         this.notion = notion;
         this.databaseId = databaseId;
         this.database = {} as QueryDatabaseResponse;
@@ -22,20 +26,24 @@ class DataBase {
                 {
                     property: '상태',
                     select: {
-                        equals: "POST",
+                        equals: 'POST',
                     },
                 },
                 {
                     property: 'update',
-                    date: filterUdate ?
-                        { on_or_after: filterUdate } :
-                        { after: filterUdate }
+                    date: filterUdate
+                        ? { on_or_after: filterUdate }
+                        : { after: filterUdate },
                 },
             ],
         };
     }
 
-    public static async create(databaseid: string, notionkey: string, filterUdate?: string): Promise<DataBase> {
+    public static async create(
+        databaseid: string,
+        notionkey: string,
+        filterUdate?: string,
+    ): Promise<DataBase> {
         const notion = new Client({ auth: notionkey });
         //수정필요
         const instance = new DataBase(notion, databaseid, filterUdate);
@@ -44,7 +52,9 @@ class DataBase {
         return instance;
     }
 
-    public async queryDatabase(filterUdate?: string): Promise<QueryDatabaseResponse> {
+    public async queryDatabase(
+        filterUdate?: string,
+    ): Promise<QueryDatabaseResponse> {
         try {
             const response = await this.notion.databases.query({
                 database_id: this.databaseId,
@@ -58,7 +68,7 @@ class DataBase {
             });
             return response;
         } catch (error) {
-            console.error("Error querying the database:", error);
+            console.error('Error querying the database:', error);
             throw error;
         }
     }

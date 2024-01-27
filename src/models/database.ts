@@ -1,64 +1,55 @@
-import * as dotenv from 'dotenv';
-import { Client } from '@notionhq/client';
-import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
+import { Client } from "@notionhq/client";
+import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
+import { NotionAPI } from "../utils/notionapi";
 
-class DataBase {
+export class DataBase {
+    private static instance: DataBase | null = null;
+
     private notion: Client;
     private databaseId: string;
-    private database: QueryDatabaseResponse;
+    public database: QueryDatabaseResponse;
 
-    filter: Filter;
+    public pageIds: { pageId: string }[] = [];
 
-    //데이터베이스는 Pages의 리스트를 담고 있다.
-    public list: string = 'Default Title';
-
-    private constructor(
-        notion: Client,
-        databaseId: string,
-        filterUdate?: string,
-    ) {
+    private constructor(notion: Client, databaseId: string) {
         this.notion = notion;
         this.databaseId = databaseId;
         this.database = {} as QueryDatabaseResponse;
-
-        this.filter = {
-            and: [
-                {
-                    property: '상태',
-                    select: {
-                        equals: 'POST',
-                    },
-                },
-                {
-                    property: 'update',
-                    date: filterUdate
-                        ? { on_or_after: filterUdate }
-                        : { after: filterUdate },
-                },
-            ],
-        };
     }
 
-    public static async create(
-        databaseid: string,
-        notionkey: string,
-        filterUdate?: string,
-    ): Promise<DataBase> {
-        const notion = new Client({ auth: notionkey });
-        //수정필요
-        const instance = new DataBase(notion, databaseid, filterUdate);
-        instance.database = await instance.queryDatabase(filterUdate);
+    public static async create(databaseid:string, filterUdate?: string): Promise<DataBase> {
+        if (!this.instance) {
+            const notionApi: NotionAPI = await NotionAPI.create();
 
-        return instance;
+            this.instance = new DataBase(notionApi.client, databaseid);
+            if (filterUdate === "lastest") {
+                const today: Date = new Date();
+                today.setDate(today.getDate() - 1);
+                filterUdate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            }
+            this.instance.database = await this.instance.queryDatabase(filterUdate);
+        }
+        return this.instance;
     }
 
-    public async queryDatabase(
-        filterUdate?: string,
-    ): Promise<QueryDatabaseResponse> {
+    public async queryDatabase(filterUdate?: string): Promise<QueryDatabaseResponse> {
         try {
-            const response = await this.notion.databases.query({
+            const response: QueryDatabaseResponse = await this.notion.databases.query({
                 database_id: this.databaseId,
-                // filter: this.filter,
+                filter: {
+                    and: [
+                        {
+                            property: '상태',
+                            select: {
+                                equals: "POST",
+                            },
+                        },
+                        ...(filterUdate ? [{
+                            property: 'update',
+                            date: { on_or_after: filterUdate }
+                        }] : []),
+                    ]
+                },
                 sorts: [
                     {
                         property: 'update',
@@ -66,25 +57,12 @@ class DataBase {
                     },
                 ],
             });
+            // pageId 리스트 업데이트
+            this.pageIds = response.results.map(page => ({ pageId: page.id }));
             return response;
         } catch (error) {
             console.error('Error querying the database:', error);
             throw error;
         }
     }
-}
-
-interface Filter {
-    and: Condition[];
-}
-
-interface Condition {
-    property: string;
-    select?: { equals: string };
-    date?: DateCondition;
-}
-
-interface DateCondition {
-    on_or_after?: string;
-    after?: string;
 }

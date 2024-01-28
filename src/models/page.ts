@@ -23,8 +23,12 @@ export class Page {
     private async init(page: Page) {
         const properties = await page.getProperties();
         page.properties = await page.extractDataFromProperties(properties);
-        page.pageUrl = `contents/post/${
-            page.pageTitle?.trim().replace(/\s+/g, '-') ?? ''
+        page.pageUrl = `${
+            page.pageTitle
+                ?.trim()
+                .replace(/[^가-힣\w\-_~]/g, '') // 한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
+                .replace(/\s+/g, '-') ?? // 공백을 하이픈으로 치환
+            ''
         }`;
     }
 
@@ -69,10 +73,10 @@ export class Page {
 
             // 마크다운 메타데이터와 contentMarkdown을 결합
             const fullMarkdown = `${markdownMetadata}${this.contentMarkdown}`;
-
+            let dir = `contents/post/${this.pageUrl}`;
             // 디렉토리 생성 (이미 존재하는 경우 오류를 무시함)
-            await fs.mkdir(this.pageUrl ?? '', { recursive: true });
-            const filePath = join(this.pageUrl ?? '', 'index.md');
+            await fs.mkdir(dir ?? '', { recursive: true });
+            const filePath = join(dir ?? '', 'index.md');
             // 결합된 내용을 파일에 쓰기 (이미 존재하는 경우 덮어쓰기)
             await fs.writeFile(filePath, fullMarkdown);
             console.log(`[page.ts] Markdown 파일 저장됨: ${filePath}`);

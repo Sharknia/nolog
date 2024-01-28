@@ -9,26 +9,37 @@ export class MarkdownConverter {
 
     public static async create(block: BlockObjectResponse): Promise<string> {
         const converter: MarkdownConverter = new MarkdownConverter(block);
-        const result = await converter.makeMakrDown();
+        const result = await converter.makeMarkDown();
         return result;
     }
 
-    private async makeMakrDown(): Promise<string> {
+    private async makeMarkDown(): Promise<string> {
         let block = this.block;
         let markdown: string = '';
+
+        console.log(
+            `[markdownConverter.ts] makeMarkDown : ${
+                block.type
+            } : ${JSON.stringify(block, null, 2)}`,
+        );
+
         switch (block.type) {
             // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형
             case 'paragraph':
                 markdown += this.convertParagraph(block.paragraph);
                 break;
+            case 'heading_1':
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
-                console.warn(`Unsupported block type: ${block.type}`);
+                console.warn(
+                    `[markdownConverter.ts] makeMarkDown : Unsupported block type - ${block.type}`,
+                );
         }
         return markdown;
     }
 
-    private convertParagraph(paragraph: any): Promise<string> {
+    private convertParagraph(paragraph: any): string {
         let markdown = '';
 
         for (const textElement of paragraph.rich_text) {
@@ -60,13 +71,6 @@ export class MarkdownConverter {
             }
             markdown += textContent;
         }
-        console.log(
-            `convertParagraph - paragraph : ${JSON.stringify(
-                paragraph,
-                null,
-                2,
-            )}`,
-        );
         markdown = markdown + '\n\n';
         console.log(`convertParagraph - markdown : ${markdown}`);
         return markdown;

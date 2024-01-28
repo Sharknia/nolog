@@ -35,7 +35,7 @@ export class Page {
         const pageResponse: GetPageResponse = await this.notion.pages.retrieve({
             page_id: this.pageId,
         });
-        console.log(pageResponse);
+        console.log(`getProperties - pageResponse : ${pageResponse}`);
         if ('properties' in pageResponse) {
             return pageResponse.properties;
         } else {

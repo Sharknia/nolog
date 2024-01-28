@@ -30,7 +30,7 @@ export class MarkdownConverter {
         switch (block.type) {
             // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형
             case 'paragraph':
-                markdown += this.convertParagraph(block.paragraph);
+                markdown += await this.convertParagraph(block.paragraph);
                 break;
             case 'heading_1':
                 markdown += this.convertHeading(block.heading_1, 1);
@@ -56,12 +56,39 @@ export class MarkdownConverter {
         return markdown;
     }
 
-    private convertParagraph(paragraph: any): string {
+    private async convertParagraph(paragraph: any): Promise<string> {
         let markdown = '';
         for (const textElement of paragraph.rich_text) {
-            markdown += this.formatTextElement(textElement);
+            if (
+                textElement.type === 'mention' &&
+                textElement.mention.type === 'page'
+            ) {
+                // mention 타입이고, page를 참조하는 경우
+                markdown += await this.convertMentionToPageLink(
+                    textElement.mention.page.id,
+                );
+            } else {
+                // 기타 텍스트 요소
+                markdown += this.formatTextElement(textElement);
+            }
         }
         return markdown + '\n\n';
+    }
+
+    private async convertMentionToPageLink(pageId: string): Promise<string> {
+        try {
+            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
+            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
+            const pageData = await Page.getSimpleData(pageId);
+
+            const pageTitle = pageData.pageTitle;
+            const pageUrl = pageData.pageUrl;
+
+            return `[${pageTitle}](${blogUrl}/${pageUrl})`;
+        } catch (error) {
+            console.error('Error converting mention to page link:', error);
+            return '';
+        }
     }
 
     private convertHeading(heading: any, level: number): string {
@@ -99,6 +126,7 @@ export class MarkdownConverter {
             return '';
         }
     }
+
     private formatRichText(richTexts: any[]): string {
         return richTexts
             .map((text) => {

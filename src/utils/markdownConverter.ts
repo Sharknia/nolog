@@ -66,6 +66,9 @@ export class MarkdownConverter {
             case 'quote':
                 markdown += this.convertQuote(block.quote);
                 break;
+            case 'code':
+                markdown += this.convertCode(block.code);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -126,6 +129,16 @@ export class MarkdownConverter {
         }
     }
 
+    private convertCode(codeBlock: any): string {
+        const codeText = codeBlock.code.rich_text
+            .map((textElement: any) => textElement.plain_text)
+            .join('');
+
+        const language = codeBlock.code.language || '';
+
+        return `\`\`\`${language}\n${codeText}\n\`\`\`\n\n`;
+    }
+
     private convertDivider(): string {
         return `<hr style="border: none; height: 1px; background-color: #e0e0e0; margin: 16px 0;" />\n`;
     }
@@ -166,7 +179,7 @@ export class MarkdownConverter {
     }
 
     private convertQuote(quoteBlock: any): string {
-        const quoteText = quoteBlock.quote.rich_text
+        const quoteText = quoteBlock.rich_text
             .map((textElement: any) => this.formatTextElement(textElement))
             .join('');
 

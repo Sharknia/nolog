@@ -3,6 +3,7 @@ import { Client } from '@notionhq/client';
 import { PropertyValue } from './types';
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { Block } from './block';
+import { promises as fs } from 'fs';
 
 export class Page {
     private pageId: string;
@@ -32,11 +33,54 @@ export class Page {
             )}`,
         );
         page.contentMarkdown = await page.fetchAndProcessBlocks();
+        console.log(
+            `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
+        );
+        await page.printMarkDown();
         return page;
     }
 
-    public async PrintMarkDown() {
-        //contentMarkdown 내용을 마크다운 파일로 저장한다.
+    public async printMarkDown() {
+        //contentMarkdown과 properties의 내용을 마크다운 파일로 저장한다.
+        try {
+            // 파일 이름 설정 (페이지 제목으로)
+            const filename = `${this.pageTitle}.md`;
+
+            // 마크다운 메타데이터 생성
+            const markdownMetadata = this.formatMarkdownMetadata();
+
+            // 마크다운 메타데이터와 contentMarkdown을 결합
+            const fullMarkdown = `${markdownMetadata}${this.contentMarkdown}`;
+
+            // 결합된 내용을 파일에 쓰기
+            await fs.writeFile(filename, fullMarkdown);
+
+            console.log(`[page.ts] Markdown 파일 저장됨: ${filename}`);
+        } catch (error) {
+            console.error(`[page.ts] 파일 저장 중 오류 발생: ${error}`);
+        }
+    }
+
+    private formatMarkdownMetadata(): string {
+        // properties를 마크다운 메타데이터로 변환
+        const metadata = [
+            '---',
+            `title: "${this.properties?.title ?? ''}"`,
+            `description: "${this.properties?.description ?? ''}"`,
+            `date: ${this.properties?.date ?? ''}`,
+            `update: ${this.properties?.update ?? ''}`,
+            // tags가 배열인 경우에만 join 메소드를 호출
+            `tags:\n  - ${
+                Array.isArray(this.properties?.tags)
+                    ? this.properties.tags.join('\n  - ')
+                    : ''
+            }`,
+            `series: "${this.properties?.series ?? ''}"`,
+            '---',
+            '',
+        ].join('\n');
+
+        return metadata;
     }
 
     private async getProperties(): Promise<object> {
@@ -66,9 +110,6 @@ export class Page {
             const blockInstance = new Block(this.notion, block.id);
             markdownContent += await blockInstance.getMarkdown();
         }
-        console.log(
-            `[page.ts] fetchAndProcessBlocks - markdownContent : ${markdownContent}`,
-        );
         return markdownContent;
     }
 

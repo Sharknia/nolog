@@ -153,29 +153,31 @@ export class Page {
                 this.pageTitle = property.title[0]?.plain_text;
                 //url 변형 추가해야함
             }
-            switch (property.type) {
-                case 'multi_select':
-                    result[key] = property.multi_select.map(
-                        (item: any) => item.name,
-                    );
-                    break;
-                case 'rich_text':
-                    result[key] = property.rich_text[0]?.plain_text;
-                    break;
-                case 'last_edited_time':
-                    const dateObj = new Date(property.last_edited_time);
-                    result[key] = dateObj.toISOString().split('T')[0]; // format: "yyyy-MM-dd"
-                    break;
-                case 'date':
-                    result[key] = property.date.start;
-                    break;
-                case 'select':
-                    result[key] = property.select.name;
-                    break;
-                case 'title':
-                    result[key] = property.title[0]?.plain_text;
-                    break;
-            }
+            try {
+                switch (property.type) {
+                    case 'multi_select':
+                        result[key] = property.multi_select.map(
+                            (item: any) => item.name,
+                        );
+                        break;
+                    case 'rich_text':
+                        result[key] = property.rich_text[0]?.plain_text;
+                        break;
+                    case 'last_edited_time':
+                        const dateObj = new Date(property.last_edited_time);
+                        result[key] = dateObj.toISOString().split('T')[0]; // format: "yyyy-MM-dd"
+                        break;
+                    case 'date':
+                        result[key] = property.date.start;
+                        break;
+                    case 'select':
+                        result[key] = property.select.name;
+                        break;
+                    case 'title':
+                        result[key] = property.title[0]?.plain_text;
+                        break;
+                }
+            } catch {}
         }
 
         return result;

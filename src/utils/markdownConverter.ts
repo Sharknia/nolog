@@ -63,6 +63,9 @@ export class MarkdownConverter {
             case 'divider':
                 markdown += this.convertDivider();
                 break;
+            case 'quote':
+                markdown += this.convertQuote(block.quote);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -160,6 +163,14 @@ export class MarkdownConverter {
                 return this.formatTextElement(text); // formatTextElement는 이전에 정의한 텍스트 포맷팅 함수
             })
             .join('');
+    }
+
+    private convertQuote(quoteBlock: any): string {
+        const quoteText = quoteBlock.quote.rich_text
+            .map((textElement: any) => this.formatTextElement(textElement))
+            .join('');
+
+        return `> ${quoteText}\n\n`;
     }
 
     private convertCallout(calloutBlock: any): string {

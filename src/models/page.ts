@@ -131,7 +131,11 @@ export class Page {
         // Process each block and convert to Markdown
         let markdownContent = '';
         for (const block of blocks.results) {
-            const blockInstance = new Block(this.notion, block.id);
+            const blockInstance = new Block(
+                this.notion,
+                block.id,
+                this.pageUrl,
+            );
             markdownContent += await blockInstance.getMarkdown();
         }
         return markdownContent;

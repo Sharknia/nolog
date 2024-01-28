@@ -10,10 +10,12 @@ export class Block {
     private notion: Client;
     private blockId: string;
     private blockData?: GetBlockResponse;
+    private pageUrl?: string;
 
-    constructor(notion: Client, blockId: string) {
+    constructor(notion: Client, blockId: string, pageUrl?: string) {
         this.notion = notion;
         this.blockId = blockId;
+        this.pageUrl = pageUrl;
     }
 
     public async getMarkdown(): Promise<string> {
@@ -29,7 +31,7 @@ export class Block {
         let markdown = '';
         // BlockObjectResponse 인 경우
         if ('type' in block) {
-            markdown += await MarkdownConverter.create(block);
+            markdown += await MarkdownConverter.create(block, this.pageUrl);
             // 하위 블록 처리 (재귀적)
             if (block.has_children) {
                 markdown += await this.processChildBlocks(block.id);

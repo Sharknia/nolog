@@ -1,19 +1,26 @@
 import { BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { Page } from '../models/page';
 import { EnvConfig } from '../utils/envConfig';
+import axios from 'axios';
+import { promises as fs } from 'fs';
+import { join } from 'path';
 
 export class MarkdownConverter {
     private block: BlockObjectResponse;
-    private EnvConfig?: EnvConfig;
+    private static imageCounter: number = 0; // 이미지 카운터 추가
+    private pageUrl?: string;
 
     private constructor(block: BlockObjectResponse) {
         this.block = block;
     }
 
-    public static async create(block: BlockObjectResponse): Promise<string> {
+    public static async create(
+        block: BlockObjectResponse,
+        pageUrl?: string,
+    ): Promise<string> {
         const converter: MarkdownConverter = new MarkdownConverter(block);
+        converter.pageUrl = pageUrl;
         const result = await converter.makeMarkDown();
-        converter.EnvConfig = EnvConfig.create();
         return result;
     }
 
@@ -47,6 +54,9 @@ export class MarkdownConverter {
             case 'link_to_page':
                 markdown += await this.convertLinkToPage(block.link_to_page);
                 break;
+            case 'image':
+                markdown += await this.convertImage(block.image);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -75,6 +85,37 @@ export class MarkdownConverter {
         return markdown + '\n\n';
     }
 
+    private async convertImage(imageBlock: any): Promise<string> {
+        try {
+            const imageUrl = imageBlock.file.url;
+            const imageCaption =
+                imageBlock.caption.length > 0
+                    ? this.formatRichText(imageBlock.caption)
+                    : '';
+
+            // 이미지 이름을 순서대로 할당 (image1, image2, ...)
+            const imageName = `image${++MarkdownConverter.imageCounter}.png`;
+            const imageDownDir = `/${this.pageUrl}/${imageName}`;
+            const imagePath = join('contents/post', imageDownDir);
+
+            // 이미지 다운로드 및 로컬에 저장
+            const response = await axios.get(imageUrl, {
+                responseType: 'arraybuffer',
+            });
+            await fs.writeFile(imagePath, response.data);
+
+            // 마크다운 이미지 문자열 생성
+            let markdownImage = `![${imageCaption}](${imageName})\n`;
+            if (imageCaption) {
+                markdownImage += `<p style="text-align:center;"><small>${imageCaption}</small></p>\n`;
+            }
+
+            return markdownImage;
+        } catch (error) {
+            console.error('Error converting image:', error);
+            return '';
+        }
+    }
     private async convertMentionToPageLink(pageId: string): Promise<string> {
         return this.createMarkdownLinkForPage(pageId);
     }

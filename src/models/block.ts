@@ -4,6 +4,7 @@ import {
     PartialBlockObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import { GetBlockResponse } from '@notionhq/client/build/src/api-endpoints';
+import { MarkdownConverter } from '../utils/markdownConverter';
 
 export class Block {
     private notion: Client;
@@ -28,20 +29,7 @@ export class Block {
         let markdown = '';
         // BlockObjectResponse 인 경우
         if ('type' in block) {
-            switch (block.type) {
-                // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형
-                case 'paragraph':
-                    markdown += this.convertParagraph(block.paragraph);
-                    break;
-                case 'heading_1':
-                    markdown += `# ${block.heading_1.rich_text
-                        .map((t) => t.plain_text)
-                        .join('')}\n\n`;
-                    break;
-                // 다른 블록 유형에 대한 처리를 여기에 추가...
-                default:
-                    console.warn(`Unsupported block type: ${block.type}`);
-            }
+            markdown += await MarkdownConverter.create(block);
             // 하위 블록 처리 (재귀적)
             if (block.has_children) {
                 markdown += await this.processChildBlocks(block.id);

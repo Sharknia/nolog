@@ -20,11 +20,18 @@ export class Page {
         this.notion = notion;
     }
 
+    private async init(page: Page) {
+        const properties = await page.getProperties();
+        page.properties = await page.extractDataFromProperties(properties);
+        page.pageUrl = `contents/post/${
+            page.pageTitle?.trim().replace(/\s+/g, '-') ?? ''
+        }`;
+    }
+
     public static async create(pageId: string) {
         const notionApi: NotionAPI = await NotionAPI.create();
         const page: Page = new Page(pageId, notionApi.client);
-        const properties = await page.getProperties();
-        page.properties = await page.extractDataFromProperties(properties);
+        await page.init(page);
         console.log(`[page.ts] start - pageTitle : ${page.pageTitle}`);
         console.log(
             `[page.ts] start - properties : ${JSON.stringify(
@@ -37,11 +44,18 @@ export class Page {
         console.log(
             `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
         );
-        page.pageUrl = `contents/post/${
-            page.pageTitle?.trim().replace(/\s+/g, '-') ?? ''
-        }`;
         await page.printMarkDown();
         return page;
+    }
+
+    public static async getSimpleData(pageId: string) {
+        const notionApi: NotionAPI = await NotionAPI.create();
+        const page: Page = new Page(pageId, notionApi.client);
+        await page.init(page);
+        return {
+            pageTitle: page.pageTitle ?? '',
+            pageUrl: page.pageUrl ?? '',
+        };
     }
 
     public async printMarkDown() {

@@ -9,6 +9,7 @@ export class MarkdownConverter {
     private block: BlockObjectResponse;
     private static imageCounter: number = 0; // 이미지 카운터 추가
     private pageUrl?: string;
+    private indentLevel: number = 0;
 
     private constructor(block: BlockObjectResponse) {
         this.block = block;
@@ -17,9 +18,12 @@ export class MarkdownConverter {
     public static async create(
         block: BlockObjectResponse,
         pageUrl?: string,
+        indentLevel: number = 0,
     ): Promise<string> {
         const converter: MarkdownConverter = new MarkdownConverter(block);
         converter.pageUrl = pageUrl;
+        converter.indentLevel = indentLevel;
+        console.log(`indentLevel : ${indentLevel}`);
         const result = await converter.makeMarkDown();
         return result;
     }
@@ -71,10 +75,7 @@ export class MarkdownConverter {
                 break;
             case 'numbered_list_item':
                 let indentLevel = 0;
-                markdown += this.convertNumberedList(
-                    block.numbered_list_item,
-                    indentLevel,
-                );
+                markdown += this.convertNumberedList(block.numbered_list_item);
                 break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
@@ -208,15 +209,12 @@ export class MarkdownConverter {
     </div>\n`;
     }
 
-    private convertNumberedList(
-        listItemBlock: any,
-        indentLevel: number = 0,
-    ): string {
+    private convertNumberedList(listItemBlock: any): string {
         const listItemContent = listItemBlock.rich_text
             .map((textElement: any) => this.formatTextElement(textElement))
             .join('');
 
-        const indent = ' '.repeat(indentLevel * 4); // 4개의 공백을 사용한 들여쓰기
+        const indent = ' '.repeat(this.indentLevel * 4); // 4개의 공백을 사용한 들여쓰기
         return `${indent}1. ${listItemContent}\n`; // 번호 매기기 목록 형식
     }
 

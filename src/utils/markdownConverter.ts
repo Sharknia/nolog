@@ -130,11 +130,11 @@ export class MarkdownConverter {
     }
 
     private convertCode(codeBlock: any): string {
-        const codeText = codeBlock.code.rich_text
+        const codeText = codeBlock.rich_text
             .map((textElement: any) => textElement.plain_text)
             .join('');
 
-        const language = codeBlock.code.language || '';
+        const language = codeBlock.language || '';
 
         return `\`\`\`${language}\n${codeText}\n\`\`\`\n\n`;
     }

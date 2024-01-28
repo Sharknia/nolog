@@ -4,6 +4,7 @@ import { PropertyValue } from './types';
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { Block } from './block';
 import { promises as fs } from 'fs';
+import { join } from 'path';
 
 export class Page {
     private pageId: string;
@@ -36,6 +37,9 @@ export class Page {
         console.log(
             `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
         );
+        page.pageUrl = `contents/post/${
+            page.pageTitle?.trim().replace(/\s+/g, '-') ?? ''
+        }`;
         await page.printMarkDown();
         return page;
     }
@@ -52,10 +56,12 @@ export class Page {
             // 마크다운 메타데이터와 contentMarkdown을 결합
             const fullMarkdown = `${markdownMetadata}${this.contentMarkdown}`;
 
-            // 결합된 내용을 파일에 쓰기
-            await fs.writeFile(filename, fullMarkdown);
-
-            console.log(`[page.ts] Markdown 파일 저장됨: ${filename}`);
+            // 디렉토리 생성 (이미 존재하는 경우 오류를 무시함)
+            await fs.mkdir(this.pageUrl ?? '', { recursive: true });
+            const filePath = join(this.pageUrl ?? '', 'index.md');
+            // 결합된 내용을 파일에 쓰기 (이미 존재하는 경우 덮어쓰기)
+            await fs.writeFile(filePath, fullMarkdown);
+            console.log(`[page.ts] Markdown 파일 저장됨: ${filePath}`);
         } catch (error) {
             console.error(`[page.ts] 파일 저장 중 오류 발생: ${error}`);
         }

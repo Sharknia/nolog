@@ -69,6 +69,13 @@ export class MarkdownConverter {
             case 'code':
                 markdown += this.convertCode(block.code);
                 break;
+            case 'numbered_list_item':
+                let indentLevel = 0;
+                markdown += this.convertNumberedList(
+                    block.numbered_list_item,
+                    indentLevel,
+                );
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -199,6 +206,18 @@ export class MarkdownConverter {
     <div class="callout ${color}">
         ${icon} <span>${textContent}</span>
     </div>\n`;
+    }
+
+    private convertNumberedList(
+        listItemBlock: any,
+        indentLevel: number = 0,
+    ): string {
+        const listItemContent = listItemBlock.rich_text
+            .map((textElement: any) => this.formatTextElement(textElement))
+            .join('');
+
+        const indent = ' '.repeat(indentLevel * 4); // 4개의 공백을 사용한 들여쓰기
+        return `${indent}1. ${listItemContent}\n`; // 번호 매기기 목록 형식
     }
 
     private formatTextElement(textElement: any): string {

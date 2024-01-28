@@ -1,7 +1,10 @@
 import { BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { Page } from '../models/page';
+import { EnvConfig } from '../utils/envConfig';
 
 export class MarkdownConverter {
     private block: BlockObjectResponse;
+    private EnvConfig?: EnvConfig;
 
     private constructor(block: BlockObjectResponse) {
         this.block = block;
@@ -10,6 +13,7 @@ export class MarkdownConverter {
     public static async create(block: BlockObjectResponse): Promise<string> {
         const converter: MarkdownConverter = new MarkdownConverter(block);
         const result = await converter.makeMarkDown();
+        converter.EnvConfig = EnvConfig.create();
         return result;
     }
 
@@ -36,6 +40,13 @@ export class MarkdownConverter {
                 break;
             case 'heading_3':
                 markdown += this.convertHeading(block.heading_3, 3);
+                break;
+            case 'bookmark':
+                markdown += this.convertBookmark(block.bookmark);
+                break;
+            case 'link_to_page':
+                markdown += await this.convertLinkToPage(block.link_to_page);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -60,6 +71,40 @@ export class MarkdownConverter {
             markdown += this.formatTextElement(textElement);
         }
         return prefix + markdown + '\n\n';
+    }
+
+    private convertBookmark(bookmark: any): string {
+        const url = bookmark.url;
+        const caption =
+            bookmark.caption.length > 0
+                ? this.formatRichText(bookmark.caption)
+                : url;
+
+        return `[${caption}](${url})\n\n`;
+    }
+
+    private async convertLinkToPage(linkToPage: any): Promise<string> {
+        try {
+            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
+            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
+            const pageId = linkToPage.page_id;
+            const pageData = await Page.getSimpleData(pageId);
+
+            const pageTitle = pageData.pageTitle;
+            const pageUrl = pageData.pageUrl;
+
+            return `[${pageTitle}](${blogUrl}/${pageUrl})\n\n`;
+        } catch (error) {
+            console.error('Error converting link_to_page:', error);
+            return '';
+        }
+    }
+    private formatRichText(richTexts: any[]): string {
+        return richTexts
+            .map((text) => {
+                return this.formatTextElement(text); // formatTextElement는 이전에 정의한 텍스트 포맷팅 함수
+            })
+            .join('');
     }
 
     private formatTextElement(textElement: any): string {

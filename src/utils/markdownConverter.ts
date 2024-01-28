@@ -77,6 +77,9 @@ export class MarkdownConverter {
                 let indentLevel = 0;
                 markdown += this.convertNumberedList(block.numbered_list_item);
                 break;
+            case 'bulleted_list_item':
+                markdown += this.convertBulletedList(block.bulleted_list_item);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -209,13 +212,22 @@ export class MarkdownConverter {
     </div>\n`;
     }
 
-    private convertNumberedList(listItemBlock: any): string {
-        const listItemContent = listItemBlock.rich_text
+    private formatListItemContent(listItemBlock: any): string {
+        return listItemBlock.rich_text
             .map((textElement: any) => this.formatTextElement(textElement))
             .join('');
+    }
 
-        const indent = ' '.repeat(this.indentLevel * 4); // 4개의 공백을 사용한 들여쓰기
-        return `${indent}1. ${listItemContent}\n`; // 번호 매기기 목록 형식
+    private convertNumberedList(listItemBlock: any): string {
+        const listItemContent = this.formatListItemContent(listItemBlock);
+        const indent = ' '.repeat(this.indentLevel * 2);
+        return `${indent}1. ${listItemContent}\n`;
+    }
+
+    private convertBulletedList(listItemBlock: any): string {
+        const listItemContent = this.formatListItemContent(listItemBlock);
+        const indent = ' '.repeat(this.indentLevel * 2);
+        return `${indent}- ${listItemContent}\n`;
     }
 
     private formatTextElement(textElement: any): string {

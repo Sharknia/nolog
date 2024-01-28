@@ -23,9 +23,13 @@ export class Page {
         const page: Page = new Page(pageId, notionApi.client);
         const properties = await page.getProperties();
         page.properties = await page.extractDataFromProperties(properties);
-        console.log(`start - pageTitle : ${page.pageTitle}`);
+        console.log(`[page.ts] start - pageTitle : ${page.pageTitle}`);
         console.log(
-            `start - properties : ${JSON.stringify(page.properties, null, 2)}`,
+            `[page.ts] start - properties : ${JSON.stringify(
+                page.properties,
+                null,
+                2,
+            )}`,
         );
         page.contentMarkdown = await page.fetchAndProcessBlocks();
         return page;
@@ -39,7 +43,7 @@ export class Page {
         const pageResponse: GetPageResponse = await this.notion.pages.retrieve({
             page_id: this.pageId,
         });
-        console.log(`getProperties - pageResponse : ${pageResponse}`);
+        console.log(`[page.ts] getProperties - pageResponse : ${pageResponse}`);
         if ('properties' in pageResponse) {
             return pageResponse.properties;
         } else {
@@ -62,7 +66,9 @@ export class Page {
             const blockInstance = new Block(this.notion, block.id);
             markdownContent += await blockInstance.getMarkdown();
         }
-
+        console.log(
+            `[page.ts] fetchAndProcessBlocks - markdownContent : ${markdownContent}`,
+        );
         return markdownContent;
     }
 

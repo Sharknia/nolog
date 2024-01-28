@@ -74,11 +74,13 @@ export class MarkdownConverter {
                 markdown += this.convertCode(block.code);
                 break;
             case 'numbered_list_item':
-                let indentLevel = 0;
                 markdown += this.convertNumberedList(block.numbered_list_item);
                 break;
             case 'bulleted_list_item':
                 markdown += this.convertBulletedList(block.bulleted_list_item);
+                break;
+            case 'to_do':
+                markdown += this.convertToDo(block.to_do);
                 break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
@@ -187,6 +189,17 @@ export class MarkdownConverter {
                 return this.formatTextElement(text); // formatTextElement는 이전에 정의한 텍스트 포맷팅 함수
             })
             .join('');
+    }
+
+    private convertToDo(toDoBlock: any): string {
+        const quoteText = toDoBlock.rich_text
+            .map((textElement: any) => this.formatTextElement(textElement))
+            .join('');
+        let pre = '- [ ]';
+        if (toDoBlock.checked == true) {
+            pre = '- [x]';
+        }
+        return `${pre} ${quoteText}\n\n`;
     }
 
     private convertQuote(quoteBlock: any): string {

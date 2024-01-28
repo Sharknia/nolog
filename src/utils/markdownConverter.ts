@@ -57,6 +57,9 @@ export class MarkdownConverter {
             case 'image':
                 markdown += await this.convertImage(block.image);
                 break;
+            case 'callout':
+                markdown += this.convertCallout(block.callout);
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -116,6 +119,7 @@ export class MarkdownConverter {
             return '';
         }
     }
+
     private async convertMentionToPageLink(pageId: string): Promise<string> {
         return this.createMarkdownLinkForPage(pageId);
     }
@@ -149,6 +153,21 @@ export class MarkdownConverter {
                 return this.formatTextElement(text); // formatTextElement는 이전에 정의한 텍스트 포맷팅 함수
             })
             .join('');
+    }
+
+    private convertCallout(calloutBlock: any): string {
+        const textContent = calloutBlock.rich_text
+            .map((textElement: any) => this.formatTextElement(textElement))
+            .join('');
+        const icon = calloutBlock.icon ? calloutBlock.icon.emoji : '';
+        const color = calloutBlock.color
+            ? calloutBlock.color
+            : 'gray_background';
+
+        return `
+    <div class="callout ${color}">
+        ${icon} <span>${textContent}</span>
+    </div>\n`;
     }
 
     private formatTextElement(textElement: any): string {

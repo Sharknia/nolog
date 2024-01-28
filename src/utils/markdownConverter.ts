@@ -281,7 +281,7 @@ export class MarkdownConverter {
             const pageTitle = pageData.pageTitle;
             const pageUrl = pageData.pageUrl;
 
-            return `[${pageTitle}](${blogUrl}/${pageUrl})`;
+            return `[${pageTitle}](${blogUrl}/${pageUrl})\n\n`;
         } catch (error) {
             console.error('Error creating markdown link for page:', error);
             return '';

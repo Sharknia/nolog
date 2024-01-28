@@ -23,6 +23,10 @@ export class Page {
         const page: Page = new Page(pageId, notionApi.client);
         const properties = await page.getProperties();
         page.properties = await page.extractDataFromProperties(properties);
+        console.log(`start - pageTitle : ${page.pageTitle}`);
+        console.log(
+            `start - properties : ${JSON.stringify(page.properties, null, 2)}`,
+        );
         page.contentMarkdown = await page.fetchAndProcessBlocks();
         return page;
     }

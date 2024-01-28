@@ -30,8 +30,6 @@ export class Posting {
 
             for (const item of this.dbInstance.pageIds) {
                 const page: Page = await Page.create(item.pageId);
-                console.log(`start - pageTitle : ${page.pageTitle}`);
-                console.log(`start - properties : ${page.properties}`);
             }
         } catch (error) {
             console.error('Error creating database instance:', error);

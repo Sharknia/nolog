@@ -76,19 +76,7 @@ export class MarkdownConverter {
     }
 
     private async convertMentionToPageLink(pageId: string): Promise<string> {
-        try {
-            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
-            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
-            const pageData = await Page.getSimpleData(pageId);
-
-            const pageTitle = pageData.pageTitle;
-            const pageUrl = pageData.pageUrl;
-
-            return `[${pageTitle}](${blogUrl}/${pageUrl})`;
-        } catch (error) {
-            console.error('Error converting mention to page link:', error);
-            return '';
-        }
+        return this.createMarkdownLinkForPage(pageId);
     }
 
     private convertHeading(heading: any, level: number): string {
@@ -111,20 +99,7 @@ export class MarkdownConverter {
     }
 
     private async convertLinkToPage(linkToPage: any): Promise<string> {
-        try {
-            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
-            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
-            const pageId = linkToPage.page_id;
-            const pageData = await Page.getSimpleData(pageId);
-
-            const pageTitle = pageData.pageTitle;
-            const pageUrl = pageData.pageUrl;
-
-            return `[${pageTitle}](${blogUrl}/${pageUrl})\n\n`;
-        } catch (error) {
-            console.error('Error converting link_to_page:', error);
-            return '';
-        }
+        return this.createMarkdownLinkForPage(linkToPage.page_id);
     }
 
     private formatRichText(richTexts: any[]): string {
@@ -162,5 +137,21 @@ export class MarkdownConverter {
         }
 
         return textContent;
+    }
+
+    private async createMarkdownLinkForPage(pageId: string): Promise<string> {
+        try {
+            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
+            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
+            const pageData = await Page.getSimpleData(pageId);
+
+            const pageTitle = pageData.pageTitle;
+            const pageUrl = pageData.pageUrl;
+
+            return `[${pageTitle}](${blogUrl}/${pageUrl})`;
+        } catch (error) {
+            console.error('Error creating markdown link for page:', error);
+            return '';
+        }
     }
 }

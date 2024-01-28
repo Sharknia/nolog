@@ -11,6 +11,7 @@
   "dependencies": {
     "@notionhq/client": "^2.2.12",
     "@types/node": "^20.5.9",
+    "axios": "^1.6.7",
     "dotenv": "^16.3.1"
   },
   "keywords": []

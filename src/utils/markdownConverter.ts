@@ -60,6 +60,9 @@ export class MarkdownConverter {
             case 'callout':
                 markdown += this.convertCallout(block.callout);
                 break;
+            case 'divider':
+                markdown += this.convertDivider();
+                break;
             // 다른 블록 유형에 대한 처리를 여기에 추가...
             default:
                 console.warn(
@@ -118,6 +121,10 @@ export class MarkdownConverter {
             console.error('Error converting image:', error);
             return '';
         }
+    }
+
+    private convertDivider(): string {
+        return `<hr style="border: none; height: 1px; background-color: #e0e0e0; margin: 16px 0;" />\n`;
     }
 
     private async convertMentionToPageLink(pageId: string): Promise<string> {

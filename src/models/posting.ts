@@ -1,7 +1,7 @@
+import { EnvConfig } from '../utils/envConfig';
+import { NotionAPI } from '../utils/notionapi';
 import { DataBase } from './database';
 import { Page } from './page';
-import { NotionAPI } from '../utils/notionapi';
-import { EnvConfig } from '../utils/envConfig';
 
 export class Posting {
     public pageIds: { pageId: string }[] = [];
@@ -26,7 +26,7 @@ export class Posting {
             const notionkey: string = this.EnvConfig.notionKey || '';
             const databaseid: string = this.EnvConfig.databaseid || '';
             this.notionApi = await NotionAPI.create(notionkey);
-            this.dbInstance = await DataBase.create(databaseid);
+            this.dbInstance = await DataBase.create(databaseid, 'lastest');
 
             for (const item of this.dbInstance.pageIds) {
                 const page: Page = await Page.create(item.pageId);

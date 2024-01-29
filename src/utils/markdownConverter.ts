@@ -161,7 +161,7 @@ export class MarkdownConverter {
     }
 
     private async convertMentionToPageLink(pageId: string): Promise<string> {
-        return this.createMarkdownLinkForPage(pageId) + "\n\n";
+        return this.createMarkdownLinkForPage(pageId);
     }
 
     private convertHeading(heading: any, level: number): string {
@@ -184,7 +184,7 @@ export class MarkdownConverter {
     }
 
     private async convertLinkToPage(linkToPage: any): Promise<string> {
-        return this.createMarkdownLinkForPage(linkToPage.page_id) + "\n\n";
+        return this.createMarkdownLinkForPage(linkToPage.page_id) + '\n\n';
     }
 
     private formatRichText(richTexts: any[]): string {
@@ -248,9 +248,14 @@ export class MarkdownConverter {
     }
 
     private formatTextElement(textElement: any): string {
-        let textContent = textElement.plain_text.trim(); // 앞뒤 공백 제거
+        // 텍스트의 앞뒤 공백을 분리하여 저장
+        const leadingSpace = textElement.plain_text.match(/^\s*/)[0];
+        const trailingSpace = textElement.plain_text.match(/\s*$/)[0];
 
-        // 텍스트 스타일링 처리
+        // 앞뒤 공백을 제거한 텍스트 내용
+        let textContent = textElement.plain_text.trim();
+
+        // 스타일링 처리
         if (textElement.annotations.bold) {
             textContent = `**${textContent}**`;
         }
@@ -273,7 +278,8 @@ export class MarkdownConverter {
             textContent = `[${textContent}](${textElement.href})`;
         }
 
-        return textContent;
+        // 스타일링 된 텍스트에 원래의 공백을 다시 추가
+        return leadingSpace + textContent + trailingSpace;
     }
 
     private async createMarkdownLinkForPage(pageId: string): Promise<string> {

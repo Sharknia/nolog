@@ -1,10 +1,10 @@
-import { NotionAPI } from '../utils/notionapi';
 import { Client } from '@notionhq/client';
-import { PropertyValue } from './types';
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
-import { Block } from './block';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { NotionAPI } from '../utils/notionapi';
+import { Block } from './block';
+import { PropertyValue } from './types';
 
 export class Page {
     private pageId: string;
@@ -26,8 +26,8 @@ export class Page {
         page.pageUrl = `${
             page.pageTitle
                 ?.trim()
-                .replace(/[^가-힣\w\-_~]/g, '') // 한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
-                .replace(/\s+/g, '-') ?? // 공백을 하이픈으로 치환
+                .replace(/\s+/g, '-') // 먼저 공백을 하이픈으로 치환
+                .replace(/[^가-힣\w\-_~]/g, '') ?? // 그 후 한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
             ''
         }`;
     }

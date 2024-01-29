@@ -1,17 +1,17 @@
 import { BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { Page } from '../models/page';
-import { EnvConfig } from '../utils/envConfig';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import axiosRetry from 'axios-retry';
+import { Page } from '../models/page';
+import { EnvConfig } from '../utils/envConfig';
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 export class MarkdownConverter {
     // axios 인스턴스에 재시도 로직 추가
 
     private block: BlockObjectResponse;
-    private static imageCounter: number = 0; // 이미지 카운터 추가
+    private imageCounter: number = 0; // 이미지 카운터 추가
     private pageUrl?: string;
     private indentLevel: number = 0;
 
@@ -121,7 +121,7 @@ export class MarkdownConverter {
                     ? this.formatRichText(imageBlock.caption)
                     : '';
 
-            const imageName = `image${++MarkdownConverter.imageCounter}.png`;
+            const imageName = `image${++this.imageCounter}.png`;
             const imageDir = join('contents', 'post', this.pageUrl || '');
             const imagePath = join(imageDir, imageName);
 

@@ -86,25 +86,26 @@ export class Page {
     }
 
     private formatMarkdownMetadata(): string {
-        // properties를 마크다운 메타데이터로 변환
-        const metadata = [
-            '---',
-            `title: "${this.properties?.title ?? ''}"`,
-            `description: "${this.properties?.description ?? ''}"`,
-            `date: ${this.properties?.date ?? ''}`,
-            `update: ${this.properties?.update ?? ''}`,
-            // tags가 배열인 경우에만 join 메소드를 호출
-            `tags:\n  - ${
-                Array.isArray(this.properties?.tags)
-                    ? this.properties.tags.join('\n  - ')
-                    : ''
-            }`,
-            `series: "${this.properties?.series ?? ''}"`,
-            '---',
-            '',
-        ].join('\n');
+        const metadata = ['---'];
 
-        return metadata;
+        // 모든 properties 키에 대해 반복
+        for (const key in this.properties) {
+            const value = this.properties[key];
+
+            // 값이 존재하고, 태그 배열인 경우 특별 처리
+            if (value) {
+                if (key === 'tags' && Array.isArray(value)) {
+                    metadata.push(`tags:\n  - ${value.join('\n  - ')}`);
+                } else {
+                    // 기타 모든 속성에 대한 처리
+                    metadata.push(`${key}: ${JSON.stringify(value)}`);
+                }
+            }
+        }
+
+        metadata.push('---', '');
+
+        return metadata.join('\n');
     }
 
     private async getProperties(): Promise<object> {

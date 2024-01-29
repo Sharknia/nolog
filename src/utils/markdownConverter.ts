@@ -4,8 +4,12 @@ import { EnvConfig } from '../utils/envConfig';
 import axios from 'axios';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import axiosRetry from 'axios-retry';
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 export class MarkdownConverter {
+    // axios 인스턴스에 재시도 로직 추가
+
     private block: BlockObjectResponse;
     private static imageCounter: number = 0; // 이미지 카운터 추가
     private pageUrl?: string;
@@ -31,7 +35,6 @@ export class MarkdownConverter {
     private async makeMarkDown(): Promise<string> {
         let block = this.block;
         let markdown: string = '';
-
         console.log(
             `[markdownConverter.ts] makeMarkDown : ${
                 block.type
@@ -118,18 +121,19 @@ export class MarkdownConverter {
                     ? this.formatRichText(imageBlock.caption)
                     : '';
 
-            // 이미지 이름을 순서대로 할당 (image1, image2, ...)
             const imageName = `image${++MarkdownConverter.imageCounter}.png`;
-            const imageDownDir = `/${this.pageUrl}/${imageName}`;
-            const imagePath = join('contents/post', imageDownDir);
+            const imageDir = join('contents', 'post', this.pageUrl || '');
+            const imagePath = join(imageDir, imageName);
 
+            // 폴더 생성
+            await fs.mkdir(imageDir, { recursive: true });
             // 이미지 다운로드 및 로컬에 저장
             const response = await axios.get(imageUrl, {
                 responseType: 'arraybuffer',
+                timeout: 10000, // 10초 타임아웃 설정
             });
             await fs.writeFile(imagePath, response.data);
 
-            // 마크다운 이미지 문자열 생성
             let markdownImage = `![${imageCaption}](${imageName})\n`;
             if (imageCaption) {
                 markdownImage += `<p style="text-align:center;"><small>${imageCaption}</small></p>\n`;

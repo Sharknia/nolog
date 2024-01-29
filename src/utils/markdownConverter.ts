@@ -161,7 +161,7 @@ export class MarkdownConverter {
     }
 
     private async convertMentionToPageLink(pageId: string): Promise<string> {
-        return this.createMarkdownLinkForPage(pageId);
+        return this.createMarkdownLinkForPage(pageId) + "\n\n";
     }
 
     private convertHeading(heading: any, level: number): string {
@@ -184,7 +184,7 @@ export class MarkdownConverter {
     }
 
     private async convertLinkToPage(linkToPage: any): Promise<string> {
-        return this.createMarkdownLinkForPage(linkToPage.page_id);
+        return this.createMarkdownLinkForPage(linkToPage.page_id) + "\n\n";
     }
 
     private formatRichText(richTexts: any[]): string {
@@ -285,7 +285,7 @@ export class MarkdownConverter {
             const pageTitle = pageData.pageTitle;
             const pageUrl = pageData.pageUrl;
 
-            return `[${pageTitle}](${blogUrl}/${pageUrl})\n\n`;
+            return `[${pageTitle}](${blogUrl}/${pageUrl})`;
         } catch (error) {
             console.error('Error creating markdown link for page:', error);
             return '';

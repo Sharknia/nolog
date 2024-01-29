@@ -234,13 +234,13 @@ export class MarkdownConverter {
     private convertNumberedList(listItemBlock: any): string {
         const listItemContent = this.formatListItemContent(listItemBlock);
         const indent = ' '.repeat(this.indentLevel * 2);
-        return `${indent}1. ${listItemContent}\n`;
+        return `${indent}1. ${listItemContent}\n\n`;
     }
 
     private convertBulletedList(listItemBlock: any): string {
         const listItemContent = this.formatListItemContent(listItemBlock);
         const indent = ' '.repeat(this.indentLevel * 2);
-        return `${indent}- ${listItemContent}\n`;
+        return `${indent}- ${listItemContent}\n\n`;
     }
 
     private formatTextElement(textElement: any): string {

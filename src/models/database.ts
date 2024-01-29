@@ -26,14 +26,16 @@ export class DataBase {
 
             this.instance = new DataBase(notionApi.client, databaseid);
             if (filterUdate === 'lastest') {
-                const today: Date = new Date();
-                today.setDate(today.getDate() - 1);
-                filterUdate = `${today.getFullYear()}-${String(
-                    today.getMonth() + 1,
-                ).padStart(2, '0')}-${String(today.getDate()).padStart(
-                    2,
-                    '0',
-                )}`;
+                // KST로 현재 시간 설정
+                const nowInKST = new Date(
+                    new Date().toLocaleString('en-US', {
+                        timeZone: 'Asia/Seoul',
+                    }),
+                );
+                // KST에서 24시간을 뺌
+                nowInKST.setHours(nowInKST.getHours() - 36);
+                // UTC로 변환
+                filterUdate = nowInKST.toISOString().split('T')[0];
             }
             this.instance.database = await this.instance.queryDatabase(
                 filterUdate,

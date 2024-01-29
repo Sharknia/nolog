@@ -248,7 +248,7 @@ export class MarkdownConverter {
     }
 
     private formatTextElement(textElement: any): string {
-        let textContent = textElement.plain_text;
+        let textContent = textElement.plain_text.trim(); // 앞뒤 공백 제거
 
         // 텍스트 스타일링 처리
         if (textElement.annotations.bold) {

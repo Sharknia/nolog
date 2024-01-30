@@ -67,12 +67,12 @@ export class DataBase {
                                       },
                                   ]
                                 : []),
-                            {
-                                property: 'title',
-                                title: {
-                                    equals: '테스트입니다',
-                                },
-                            },
+                            // {
+                            //     property: 'title',
+                            //     title: {
+                            //         equals: '테스트입니다',
+                            //     },
+                            // },
                         ],
                     },
                     sorts: [

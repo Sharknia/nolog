@@ -260,7 +260,9 @@ export class MarkdownConverter {
         const leadingSpace = textElement.plain_text.match(/^\s*/)[0];
         const trailingSpace = textElement.plain_text.match(/\s*$/)[0];
 
-        let textContent = textElement.plain_text.trim();
+        let textContent = this.escapeMarkdownUnderscores(
+            textElement.plain_text.trim(),
+        );
 
         // 코드 스타일이 적용된 경우 다른 스타일 적용을 건너뛴다.
         if (textElement.annotations.code) {
@@ -296,6 +298,11 @@ export class MarkdownConverter {
         }
 
         return leadingSpace + textContent + trailingSpace;
+    }
+
+    // 언더스코어 이스케이프 처리 함수
+    private escapeMarkdownUnderscores(text: string): string {
+        return text.replace(/(\w)_(\w)/g, '$1\\_$2');
     }
 
     private async createMarkdownLinkForPage(pageId: string): Promise<string> {

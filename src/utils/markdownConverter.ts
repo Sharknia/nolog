@@ -32,14 +32,64 @@ export class MarkdownConverter {
         return result;
     }
 
+    public static async convertTableRow(row: any): Promise<string> {
+        const cells = row.cells.map(async (cell: any[]) => {
+            // 각 셀의 텍스트를 formatTextElement 함수를 이용해 포맷팅
+            const cellContent = await Promise.all(
+                cell.map(async (textElement: any) => {
+                    return await MarkdownConverter.formatTableCellElement(
+                        textElement,
+                    );
+                }),
+            );
+            return cellContent.join(' | ');
+        });
+
+        const formattedCells = await Promise.all(cells);
+        return '| ' + formattedCells.join(' | ') + ' |\n';
+    }
+
+    public static async formatTableCellElement(
+        textElement: any,
+    ): Promise<string> {
+        const leadingSpace = textElement.plain_text.match(/^\s*/)[0];
+        const trailingSpace = textElement.plain_text.match(/\s*$/)[0];
+
+        let textContent = textElement.plain_text.trim();
+
+        // 테이블 셀에서 HTML 스타일은 제외하고 순수 마크다운 스타일만 적용
+        if (textElement.annotations.bold) {
+            textContent = `**${textContent}**`;
+        }
+        if (textElement.annotations.italic) {
+            textContent = `*${textContent}*`;
+        }
+        if (textElement.annotations.strikethrough) {
+            textContent = `~~${textContent}~~`;
+        }
+        if (textElement.annotations.code) {
+            textContent = `\`${textContent}\``;
+        }
+
+        // 링크 처리
+        if (textElement.href) {
+            textContent = await MarkdownConverter.change_url_formmat(
+                textContent,
+                textElement.href,
+            );
+        }
+
+        return leadingSpace + textContent + trailingSpace;
+    }
+
     private async makeMarkDown(): Promise<string> {
         let block = this.block;
         let markdown: string = '';
-        // console.log(
-        //     `[markdownConverter.ts] makeMarkDown : ${
-        //         block.type
-        //     } : ${JSON.stringify(block, null, 2)}`,
-        // );
+        console.log(
+            `[markdownConverter.ts] makeMarkDown : ${
+                block.type
+            } : ${JSON.stringify(block, null, 2)}`,
+        );
 
         switch (block.type) {
             // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형
@@ -286,15 +336,10 @@ export class MarkdownConverter {
         }
 
         if (textElement.href) {
-            const rawId = textElement.href.startsWith('/')
-                ? textElement.href.substring(1)
-                : textElement.href;
-            if (this.isValidUUID(rawId)) {
-                const pageId = this.formatAsUUID(rawId);
-                textContent = await this.createMarkdownLinkForPage(pageId);
-            } else {
-                textContent = `[${textContent}](${textElement.href})`;
-            }
+            textContent = await MarkdownConverter.change_url_formmat(
+                textContent,
+                textElement.href,
+            );
         }
 
         return leadingSpace + textContent + trailingSpace;
@@ -325,15 +370,30 @@ export class MarkdownConverter {
         return ' '.repeat(this.indentLevel * 4); // Assuming 4 spaces per indent level
     }
 
-    private formatAsUUID(id: string) {
-        // UUID 형식으로 변환하는 로직
-        return `${id.substring(0, 8)}-${id.substring(8, 12)}-${id.substring(
-            12,
-            16,
-        )}-${id.substring(16, 20)}-${id.substring(20)}`;
-    }
+    public static async change_url_formmat(
+        textContent: string,
+        href: string,
+    ): Promise<string> {
+        const rawId = href.startsWith('/') ? href.substring(1) : href;
+        if (/^[0-9a-f]{32}$/i.test(rawId)) {
+            const pageId = `${rawId.substring(0, 8)}-${rawId.substring(
+                8,
+                12,
+            )}-${rawId.substring(12, 16)}-${rawId.substring(
+                16,
+                20,
+            )}-${rawId.substring(20)}`;
 
-    private isValidUUID(id: string): boolean {
-        return /^[0-9a-f]{32}$/i.test(id);
+            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
+            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
+            const pageData = await Page.getSimpleData(pageId);
+
+            const pageUrl = pageData.pageUrl;
+
+            textContent = `[${textContent}](${blogUrl}/${pageUrl})`;
+        } else {
+            textContent = `[${textContent}](${href})`;
+        }
+        return textContent;
     }
 }

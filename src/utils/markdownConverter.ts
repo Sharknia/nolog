@@ -35,11 +35,11 @@ export class MarkdownConverter {
     private async makeMarkDown(): Promise<string> {
         let block = this.block;
         let markdown: string = '';
-        console.log(
-            `[markdownConverter.ts] makeMarkDown : ${
-                block.type
-            } : ${JSON.stringify(block, null, 2)}`,
-        );
+        // console.log(
+        //     `[markdownConverter.ts] makeMarkDown : ${
+        //         block.type
+        //     } : ${JSON.stringify(block, null, 2)}`,
+        // );
 
         switch (block.type) {
             // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형
@@ -95,7 +95,8 @@ export class MarkdownConverter {
                     `[markdownConverter.ts] makeMarkDown : Unsupported block type - ${block.type}`,
                 );
         }
-        return markdown;
+        const indent = this.generateIndent(); // 들여쓰기 생성
+        return indent + markdown;
     }
 
     private async convertParagraph(paragraph: any): Promise<string> {
@@ -185,7 +186,9 @@ export class MarkdownConverter {
     }
 
     private async convertLinkToPage(linkToPage: any): Promise<string> {
-        return this.createMarkdownLinkForPage(linkToPage.page_id) + '\n\n';
+        return (
+            (await this.createMarkdownLinkForPage(linkToPage.page_id)) + '\n\n'
+        );
     }
 
     private async formatRichText(richTexts: any[]): Promise<string> {
@@ -245,14 +248,12 @@ export class MarkdownConverter {
 
     private async convertNumberedList(listItemBlock: any): Promise<string> {
         const listItemContent = await this.formatListItemContent(listItemBlock);
-        const indent = ' '.repeat(this.indentLevel * 2);
-        return `${indent}1. ${listItemContent}\n\n`;
+        return `1. ${listItemContent}\n\n`;
     }
 
     private async convertBulletedList(listItemBlock: any): Promise<string> {
         const listItemContent = await this.formatListItemContent(listItemBlock);
-        const indent = ' '.repeat(this.indentLevel * 2);
-        return `${indent}- ${listItemContent}\n\n`;
+        return `- ${listItemContent}\n\n`;
     }
 
     private async formatTextElement(textElement: any): Promise<string> {
@@ -317,6 +318,10 @@ export class MarkdownConverter {
             console.error('Error creating markdown link for page:', error);
             return '';
         }
+    }
+
+    private generateIndent(): string {
+        return ' '.repeat(this.indentLevel * 4); // Assuming 4 spaces per indent level
     }
 
     private formatAsUUID(id: string) {

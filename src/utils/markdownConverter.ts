@@ -234,9 +234,7 @@ export class MarkdownConverter {
             : 'gray_background';
 
         return `
-        <div class="callout ${color}">
-            ${icon} <span>${textContent}</span>
-        </div>\n`;
+        ${textContent}\n\n`;
     }
 
     private async formatListItemContent(listItemBlock: any): Promise<string> {

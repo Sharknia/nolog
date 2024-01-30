@@ -67,6 +67,12 @@ export class DataBase {
                                       },
                                   ]
                                 : []),
+                            {
+                                property: 'title',
+                                title: {
+                                    equals: 'NotionAPI를 활용한 자동 포스팅(4)',
+                                },
+                            },
                         ],
                     },
                     sorts: [

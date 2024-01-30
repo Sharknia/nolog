@@ -139,9 +139,6 @@ export class MarkdownConverter {
             await fs.writeFile(imagePath, response.data);
 
             let markdownImage = `![${imageCaption}](${imageName})\n`;
-            if (imageCaption) {
-                markdownImage += `<p style="text-align:center;"><small>${imageCaption}</small></p>\n`;
-            }
 
             return markdownImage;
         } catch (error) {

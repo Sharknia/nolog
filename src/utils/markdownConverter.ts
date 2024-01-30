@@ -9,9 +9,9 @@ axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 export class MarkdownConverter {
     // axios 인스턴스에 재시도 로직 추가
+    public static imageCounter: number = 0; // 이미지 카운터 추가
 
     private block: BlockObjectResponse;
-    private imageCounter: number = 0; // 이미지 카운터 추가
     private pageUrl?: string;
     private indentLevel: number = 0;
 
@@ -126,7 +126,7 @@ export class MarkdownConverter {
                     ? await this.formatRichText(imageBlock.caption)
                     : '';
 
-            const imageName = `image${++this.imageCounter}.png`;
+            const imageName = `image${++MarkdownConverter.imageCounter}.png`;
             const imageDir = join('contents', 'post', this.pageUrl || '');
             const imagePath = join(imageDir, imageName);
 
@@ -257,50 +257,44 @@ export class MarkdownConverter {
     }
 
     private async formatTextElement(textElement: any): Promise<string> {
-        // 텍스트의 앞뒤 공백을 분리하여 저장
         const leadingSpace = textElement.plain_text.match(/^\s*/)[0];
         const trailingSpace = textElement.plain_text.match(/\s*$/)[0];
 
-        // 앞뒤 공백을 제거한 텍스트 내용
         let textContent = textElement.plain_text.trim();
 
-        // 스타일링 처리
-        if (textElement.annotations.bold) {
-            textContent = `**${textContent}**`;
-        }
-        if (textElement.annotations.italic) {
-            textContent = `*${textContent}*`;
-        }
-        if (textElement.annotations.strikethrough) {
-            textContent = `~~${textContent}~~`;
-        }
+        // 코드 스타일이 적용된 경우 다른 스타일 적용을 건너뛴다.
         if (textElement.annotations.code) {
             textContent = `\`${textContent}\``;
-        }
-        if (textElement.annotations.underline) {
-            textContent = `<u>${textContent}</u>`;
-        }
-        if (textElement.annotations.color !== 'default') {
-            textContent = `<span style="color: ${textElement.annotations.color};">${textContent}</span>`;
+        } else {
+            if (textElement.annotations.bold) {
+                textContent = `**${textContent}**`;
+            }
+            if (textElement.annotations.italic) {
+                textContent = `*${textContent}*`;
+            }
+            if (textElement.annotations.strikethrough) {
+                textContent = `~~${textContent}~~`;
+            }
+            if (textElement.annotations.underline) {
+                textContent = `<u>${textContent}</u>`;
+            }
+            if (textElement.annotations.color !== 'default') {
+                textContent = `<span style="color: ${textElement.annotations.color};">${textContent}</span>`;
+            }
         }
 
         if (textElement.href) {
-            // href가 Notion의 내부 링크 형식인지 확인
             const rawId = textElement.href.startsWith('/')
                 ? textElement.href.substring(1)
                 : textElement.href;
             if (this.isValidUUID(rawId)) {
-                // UUID 형식으로 변환
                 const pageId = this.formatAsUUID(rawId);
-                // 마크다운 링크 생성
                 textContent = await this.createMarkdownLinkForPage(pageId);
             } else {
-                // 유효하지 않은 UUID 형식이거나 일반 링크
                 textContent = `[${textContent}](${textElement.href})`;
             }
         }
 
-        // 스타일링 된 텍스트에 원래의 공백을 다시 추가
         return leadingSpace + textContent + trailingSpace;
     }
 

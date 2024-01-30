@@ -5,6 +5,7 @@ import { join } from 'path';
 import { NotionAPI } from '../utils/notionapi';
 import { Block } from './block';
 import { PropertyValue } from './types';
+import { MarkdownConverter } from '../utils/markdownConverter';
 
 export class Page {
     private pageId: string;
@@ -35,6 +36,7 @@ export class Page {
     public static async create(pageId: string) {
         const notionApi: NotionAPI = await NotionAPI.create();
         const page: Page = new Page(pageId, notionApi.client);
+        MarkdownConverter.imageCounter = 0
         await page.init(page);
         console.log(`[page.ts] start - pageTitle : ${page.pageTitle}`);
         console.log(
@@ -44,6 +46,7 @@ export class Page {
                 2,
             )}`,
         );
+
         page.contentMarkdown = await page.fetchAndProcessBlocks();
         console.log(
             `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,

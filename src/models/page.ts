@@ -1,22 +1,22 @@
-import { Client } from '@notionhq/client';
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { MarkdownConverter } from '../utils/markdownConverter';
+import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
 import { Block } from './block';
 import { PropertyValue } from './types';
-import { MarkdownConverter } from '../utils/markdownConverter';
 
 export class Page {
     private pageId: string;
-    private notion: Client;
+    private notion: NotionClientWithRetry;
 
     public properties?: Record<string, PropertyValue>;
     public pageTitle?: string;
     public pageUrl?: string;
     public contentMarkdown?: string;
 
-    private constructor(pageId: string, notion: Client) {
+    private constructor(pageId: string, notion: NotionClientWithRetry) {
         this.pageId = pageId;
         this.notion = notion;
     }
@@ -36,21 +36,21 @@ export class Page {
     public static async create(pageId: string) {
         const notionApi: NotionAPI = await NotionAPI.create();
         const page: Page = new Page(pageId, notionApi.client);
-        MarkdownConverter.imageCounter = 0
+        MarkdownConverter.imageCounter = 0;
         await page.init(page);
         console.log(`[page.ts] start - pageTitle : ${page.pageTitle}`);
-        console.log(
-            `[page.ts] start - properties : ${JSON.stringify(
-                page.properties,
-                null,
-                2,
-            )}`,
-        );
+        // console.log(
+        //     `[page.ts] start - properties : ${JSON.stringify(
+        //         page.properties,
+        //         null,
+        //         2,
+        //     )}`,
+        // );
 
         page.contentMarkdown = await page.fetchAndProcessBlocks();
-        console.log(
-            `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
-        );
+        // console.log(
+        //     `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
+        // );
         await page.printMarkDown();
         return page;
     }
@@ -112,10 +112,10 @@ export class Page {
     }
 
     private async getProperties(): Promise<object> {
-        const pageResponse: GetPageResponse = await this.notion.pages.retrieve({
+        const pageResponse: GetPageResponse = await this.notion.pagesRetrieve({
             page_id: this.pageId,
         });
-        console.log(`[page.ts] getProperties - pageResponse : ${pageResponse}`);
+        // console.log(`[page.ts] getProperties - pageResponse : ${pageResponse}`);
         if ('properties' in pageResponse) {
             return pageResponse.properties;
         } else {

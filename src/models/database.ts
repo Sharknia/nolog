@@ -1,17 +1,17 @@
-import { Client } from '@notionhq/client';
 import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
+import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
 
 export class DataBase {
     private static instance: DataBase | null = null;
 
-    private notion: Client;
+    private notion: NotionClientWithRetry;
     private databaseId: string;
     public database: QueryDatabaseResponse;
 
     public pageIds: { pageId: string }[] = [];
 
-    private constructor(notion: Client, databaseId: string) {
+    private constructor(notion: NotionClientWithRetry, databaseId: string) {
         this.notion = notion;
         this.databaseId = databaseId;
         this.database = {} as QueryDatabaseResponse;
@@ -49,7 +49,7 @@ export class DataBase {
     ): Promise<QueryDatabaseResponse> {
         try {
             const response: QueryDatabaseResponse =
-                await this.notion.databases.query({
+                await this.notion.databasesQuery({
                     database_id: this.databaseId,
                     filter: {
                         and: [
@@ -70,7 +70,7 @@ export class DataBase {
                             // {
                             //     property: 'title',
                             //     title: {
-                            //         equals: '테스트입니다',
+                            //         equals: '생성기(generate) 패턴',
                             //     },
                             // },
                         ],

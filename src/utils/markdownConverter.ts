@@ -27,7 +27,7 @@ export class MarkdownConverter {
         const converter: MarkdownConverter = new MarkdownConverter(block);
         converter.pageUrl = pageUrl;
         converter.indentLevel = indentLevel;
-        console.log(`indentLevel : ${indentLevel}`);
+        // console.log(`indentLevel : ${indentLevel}`);
         const result = await converter.makeMarkDown();
         return result;
     }
@@ -85,11 +85,11 @@ export class MarkdownConverter {
     private async makeMarkDown(): Promise<string> {
         let block = this.block;
         let markdown: string = '';
-        console.log(
-            `[markdownConverter.ts] makeMarkDown : ${
-                block.type
-            } : ${JSON.stringify(block, null, 2)}`,
-        );
+        // console.log(
+        //     `[markdownConverter.ts] makeMarkDown : ${
+        //         block.type
+        //     } : ${JSON.stringify(block, null, 2)}`,
+        // );
 
         switch (block.type) {
             // 텍스트의 기본 단위,텍스트를 입력할 때 기본적으로 생성되는 블록 유형

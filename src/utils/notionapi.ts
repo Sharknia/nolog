@@ -1,17 +1,17 @@
-import { Client } from "@notionhq/client";
+import { NotionClientWithRetry } from './notionClientWithRetry';
 
 export class NotionAPI {
     private static instance: NotionAPI | null = null;
-    public client: Client;
+    public client: NotionClientWithRetry;
 
     private constructor(notionKey: string) {
-        this.client = new Client({ auth: notionKey });
+        this.client = new NotionClientWithRetry({ auth: notionKey });
     }
 
-    public static async create(notionKey: string = "") {
+    public static async create(notionKey: string = '') {
         if (!this.instance) {
             if (!notionKey) {
-                throw new Error("NOTION_KEY is missing");
+                throw new Error('NOTION_KEY is missing');
             }
             this.instance = new NotionAPI(notionKey);
         }

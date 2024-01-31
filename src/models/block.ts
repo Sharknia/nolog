@@ -1,16 +1,16 @@
-import { Client } from '@notionhq/client';
 import { GetBlockResponse } from '@notionhq/client/build/src/api-endpoints';
 import { MarkdownConverter } from '../utils/markdownConverter';
+import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 
 export class Block {
-    private notion: Client;
+    private notion: NotionClientWithRetry;
     private blockId: string;
     private blockData?: GetBlockResponse;
     private pageUrl?: string;
     private indentLevel: number; // 추가된 indentLevel
 
     constructor(
-        notion: Client,
+        notion: NotionClientWithRetry,
         blockId: string,
         pageUrl?: string,
         indentLevel: number = 0,
@@ -27,7 +27,7 @@ export class Block {
     }
 
     private async fetchBlockData(): Promise<GetBlockResponse> {
-        return await this.notion.blocks.retrieve({ block_id: this.blockId });
+        return await this.notion.blocksRetrieve({ block_id: this.blockId });
     }
 
     private async processBlock(block: GetBlockResponse): Promise<string> {

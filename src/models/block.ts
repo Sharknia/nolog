@@ -33,7 +33,9 @@ export class Block {
     private async processBlock(block: GetBlockResponse): Promise<string> {
         let markdown = '';
         if ('type' in block) {
-            if (block.type === 'table') {
+            if (block.type == 'toggle') {
+                markdown += await this.processToggleBlock(block);
+            } else if (block.type === 'table') {
                 // 테이블 처리 로직
                 markdown += await this.processTableBlock(block);
             } else if (block.type !== 'table_row') {
@@ -81,7 +83,38 @@ export class Block {
         return markdown + '\n';
     }
 
-    private async processChildBlocks(blockId: string): Promise<string> {
+    private async processToggleBlock(
+        toggleBlock: GetBlockResponse,
+    ): Promise<string> {
+        let markdown = '';
+        if ('type' in toggleBlock && toggleBlock.type == 'toggle') {
+            // 토글 제목 변환
+            const toggleTitle = await Promise.all(
+                toggleBlock.toggle.rich_text.map(async (textElement) => {
+                    if (textElement.plain_text) {
+                        return await MarkdownConverter.formatTableCellElement(
+                            textElement,
+                        );
+                    }
+                    return '';
+                }),
+            );
+
+            // 토글 내용 변환
+            if (toggleBlock.has_children) {
+                markdown += await this.processChildBlocks(toggleBlock.id, 0);
+            }
+            markdown = `<details>\n<summary>${toggleTitle.join(
+                '',
+            )}</summary>\n\n${markdown}\n</details>`;
+        }
+        return markdown + '\n\n';
+    }
+
+    private async processChildBlocks(
+        blockId: string,
+        plusIndent: number = 1,
+    ): Promise<string> {
         const children = await this.notion.blocks.children.list({
             block_id: blockId,
         });
@@ -91,7 +124,7 @@ export class Block {
                 this.notion,
                 child.id,
                 this.pageUrl,
-                this.indentLevel + 1,
+                this.indentLevel + plusIndent,
             );
             markdown += await childBlock.getMarkdown();
         }

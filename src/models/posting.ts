@@ -21,13 +21,15 @@ export class Posting {
     }
 
     public async start(): Promise<void> {
+        console.log('[posting.ts] start!');
         try {
             this.EnvConfig = EnvConfig.create();
             const notionkey: string = this.EnvConfig.notionKey || '';
             const databaseid: string = this.EnvConfig.databaseid || '';
             this.notionApi = await NotionAPI.create(notionkey);
-            this.dbInstance = await DataBase.create(databaseid, 'lastest');
+            this.dbInstance = await DataBase.create(databaseid, '');
 
+            console.log('[posting.ts] page 순회 시작');
             for (const item of this.dbInstance.pageIds) {
                 const page: Page = await Page.create(item.pageId);
             }

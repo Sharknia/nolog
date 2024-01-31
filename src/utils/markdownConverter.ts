@@ -14,9 +14,11 @@ export class MarkdownConverter {
     private block: BlockObjectResponse;
     private pageUrl?: string;
     private indentLevel: number = 0;
+    private envConfig: EnvConfig;
 
     private constructor(block: BlockObjectResponse) {
         this.block = block;
+        this.envConfig = EnvConfig.create();
     }
 
     public static async create(
@@ -352,15 +354,9 @@ export class MarkdownConverter {
         return leadingSpace + textContent + trailingSpace;
     }
 
-    // 언더스코어 이스케이프 처리 함수
-    private escapeMarkdownUnderscores(text: string): string {
-        return text.replace(/(\w)_(\w)/g, '$1\\_$2');
-    }
-
     private async createMarkdownLinkForPage(pageId: string): Promise<string> {
         try {
-            const envConfig = EnvConfig.create(); // EnvConfig 인스턴스 생성
-            const blogUrl = envConfig.blogUrl; // blogUrl 가져오기
+            const blogUrl = this.envConfig.blogUrl; // blogUrl 가져오기
             const pageData = await Page.getSimpleData(pageId);
 
             const pageTitle = pageData.pageTitle;

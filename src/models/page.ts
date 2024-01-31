@@ -42,8 +42,11 @@ export class Page {
                 if (subDir != null && subDir != '') {
                     // subDir이 페이지 프로퍼티에 있는 경우
                     if (subDir in page.properties) {
-                        // 프로퍼티 값이 문자열인 경우에만 추가합니다.
-                        if (typeof page.properties[subDir] === 'string') {
+                        // 프로퍼티 값이 문자열 또는 숫자인 경우에만 추가합니다.
+                        if (
+                            typeof page.properties[subDir] === 'string' ||
+                            typeof page.properties[subDir] === 'number'
+                        ) {
                             // subDirPath에 프로퍼티 값을 추가합니다.
                             subDirPath += `${page.properties[subDir]}/`;
                         } else if (Array.isArray(page.properties[subDir])) {
@@ -57,11 +60,6 @@ export class Page {
                                 `Property '${subDir}' is not a string.`,
                             );
                         }
-                    } else {
-                        // subDir이 페이지 프로퍼티에 없는 경우 오류를 발생시킵니다.
-                        throw new Error(
-                            `Property '${subDir}' does not exist in the page properties.`,
-                        );
                     }
                 }
             }

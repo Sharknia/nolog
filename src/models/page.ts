@@ -1,6 +1,7 @@
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { EnvConfig } from '../utils/envConfig';
 import { MarkdownConverter } from '../utils/markdownConverter';
 import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
@@ -16,9 +17,11 @@ export class Page {
     public pageUrl?: string;
     public contentMarkdown?: string;
 
+    private envConfig: EnvConfig;
     private constructor(pageId: string, notion: NotionClientWithRetry) {
         this.pageId = pageId;
         this.notion = notion;
+        this.envConfig = EnvConfig.create();
     }
 
     private async init(page: Page) {
@@ -76,10 +79,10 @@ export class Page {
 
             // 마크다운 메타데이터와 contentMarkdown을 결합
             const fullMarkdown = `${markdownMetadata}${this.contentMarkdown}`;
-            let dir = `contents/post/${this.pageUrl}`;
+            let dir = join(this.envConfig.saveDir!, this.pageUrl!);
             // 디렉토리 생성 (이미 존재하는 경우 오류를 무시함)
-            await fs.mkdir(dir ?? '', { recursive: true });
-            const filePath = join(dir ?? '', 'index.md');
+            await fs.mkdir(dir, { recursive: true });
+            const filePath = join(dir, 'index.md');
             // 결합된 내용을 파일에 쓰기 (이미 존재하는 경우 덮어쓰기)
             await fs.writeFile(filePath, fullMarkdown);
             console.log(`[page.ts] Markdown 파일 저장됨: ${filePath}`);

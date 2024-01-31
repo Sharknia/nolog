@@ -179,7 +179,7 @@ export class MarkdownConverter {
                     : '';
 
             const imageName = `image${++MarkdownConverter.imageCounter}.png`;
-            const imageDir = join('contents', 'post', this.pageUrl || '');
+            const imageDir = join(this.envConfig.saveDir!, this.pageUrl || '');
             const imagePath = join(imageDir, imageName);
 
             // 폴더 생성

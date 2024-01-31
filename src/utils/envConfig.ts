@@ -6,15 +6,17 @@ export class EnvConfig {
     public notionKey: string | null = null;
     public databaseid: string | null = null;
     public blogUrl: string | null = null;
+    public saveDir: string | null = null;
 
     private constructor() {
         dotenv.config({ path: `${__dirname}/../../.env` });
         this.notionKey = process.env.NOTION_KEY || '';
         this.databaseid = process.env.NOTION_DATABASE_ID || '';
         this.blogUrl = process.env.BLOG_URL || '';
+        this.saveDir = process.env.SAVE_DIR || '';
 
         // If blogUrl ends with a slash, remove it
-        if (this.blogUrl.endsWith('/')) {
+        if (this.blogUrl && this.blogUrl.endsWith('/')) {
             this.blogUrl = this.blogUrl.slice(0, -1);
         }
     }

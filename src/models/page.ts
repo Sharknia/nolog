@@ -198,10 +198,13 @@ export class Page {
         const result: Record<string, PropertyValue> = {};
         for (const key of Object.keys(properties)) {
             const property = properties[key];
-            //페이지 타이틀 저장
             if (key.toLowerCase() == 'title' || key == '제목') {
-                this.pageTitle = property.title[0]?.plain_text;
-                //url 변형 추가해야함
+                this.pageTitle = property.title
+                    .map(
+                        (textBlock: { plain_text: string }) =>
+                            textBlock.plain_text,
+                    )
+                    .join('');
             }
             try {
                 switch (property.type) {

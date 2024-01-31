@@ -12,6 +12,11 @@ export class EnvConfig {
         this.notionKey = process.env.NOTION_KEY || '';
         this.databaseid = process.env.NOTION_DATABASE_ID || '';
         this.blogUrl = process.env.BLOG_URL || '';
+
+        // If blogUrl ends with a slash, remove it
+        if (this.blogUrl.endsWith('/')) {
+            this.blogUrl = this.blogUrl.slice(0, -1);
+        }
     }
 
     public static create() {

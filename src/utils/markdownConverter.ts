@@ -75,7 +75,7 @@ export class MarkdownConverter {
 
         // 링크 처리
         if (textElement.href) {
-            textContent = await MarkdownConverter.change_url_formmat(
+            textContent = await MarkdownConverter.change_url_format(
                 textContent,
                 textElement.href,
             );
@@ -345,7 +345,7 @@ export class MarkdownConverter {
         }
 
         if (textElement.href) {
-            textContent = await MarkdownConverter.change_url_formmat(
+            textContent = await MarkdownConverter.change_url_format(
                 textContent,
                 textElement.href,
             );
@@ -373,7 +373,7 @@ export class MarkdownConverter {
         return ' '.repeat(this.indentLevel * 4); // Assuming 4 spaces per indent level
     }
 
-    public static async change_url_formmat(
+    public static async change_url_format(
         textContent: string,
         href: string,
     ): Promise<string> {

@@ -25,15 +25,57 @@ export class Page {
     }
 
     private async init(page: Page) {
+        // 페이지의 프로퍼티를 가져옵니다.
         const properties = await page.getProperties();
+        // 페이지의 프로퍼티에서 데이터를 추출합니다.
         page.properties = await page.extractDataFromProperties(properties);
-        page.pageUrl = `${
+
+        let subDirPath = '';
+        // saveSubDir 환경 변수가 null이 아닌 경우
+        if (
+            this.envConfig.saveSubDir != null &&
+            this.envConfig.saveSubDir != ''
+        ) {
+            // saveSubDir을 '/'로 분리합니다.
+            const subDirs = this.envConfig.saveSubDir.split('/');
+            for (const subDir of subDirs) {
+                if (subDir != null && subDir != '') {
+                    // subDir이 페이지 프로퍼티에 있는 경우
+                    if (subDir in page.properties) {
+                        // 프로퍼티 값이 문자열인 경우에만 추가합니다.
+                        if (typeof page.properties[subDir] === 'string') {
+                            // subDirPath에 프로퍼티 값을 추가합니다.
+                            subDirPath += `${page.properties[subDir]}/`;
+                        } else if (Array.isArray(page.properties[subDir])) {
+                            // 프로퍼티 값이 배열인 경우 오류를 발생시킵니다.
+                            throw new Error(
+                                `Property '${subDir}' is an array and cannot be included in the URL.`,
+                            );
+                        } else {
+                            // 프로퍼티 값이 문자열이 아닌 경우 오류를 발생시킵니다.
+                            throw new Error(
+                                `Property '${subDir}' is not a string.`,
+                            );
+                        }
+                    } else {
+                        // subDir이 페이지 프로퍼티에 없는 경우 오류를 발생시킵니다.
+                        throw new Error(
+                            `Property '${subDir}' does not exist in the page properties.`,
+                        );
+                    }
+                }
+            }
+        }
+
+        // 페이지 URL을 생성합니다.
+        page.pageUrl = `${subDirPath}${
             page.pageTitle
                 ?.trim()
-                .replace(/[^가-힣\w\-_~]/g, '') // 그 후 한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
-                .replace(/\s+/g, '-') ?? // 먼저 공백을 하이픈으로 치환
+                .replace(/[^가-힣\w\-_~]/g, '') //한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
+                .replace(/\s+/g, '-') ?? // 공백을 하이픈으로 치환
             ''
         }`;
+        console.log(`[page.pageUrl] ${page.pageUrl}`);
     }
 
     public static async create(pageId: string) {
@@ -86,6 +128,7 @@ export class Page {
             // 결합된 내용을 파일에 쓰기 (이미 존재하는 경우 덮어쓰기)
             await fs.writeFile(filePath, fullMarkdown);
             console.log(`[page.ts] Markdown 파일 저장됨: ${filePath}`);
+            await this.updatePageStatus();
         } catch (error) {
             console.error(`[page.ts] 파일 저장 중 오류 발생: ${error}`);
         }
@@ -188,5 +231,23 @@ export class Page {
         }
 
         return result;
+    }
+
+    private async updatePageStatus() {
+        try {
+            // Notion API를 사용하여 페이지의 상태를 업데이트합니다.
+            await this.notion.pages.update({
+                page_id: this.pageId,
+                properties: {
+                    상태: {
+                        type: 'select',
+                        select: { name: 'Updated' },
+                    },
+                },
+            });
+            console.log(`[page.ts] Page status updated: ${this.pageId}`);
+        } catch (error) {
+            console.error(`[page.ts] Failed to update page status: ${error}`);
+        }
     }
 }

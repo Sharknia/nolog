@@ -56,31 +56,11 @@ export class DataBase {
                             {
                                 property: '상태',
                                 select: {
-                                    equals: 'POST',
+                                    equals: 'Ready',
                                 },
                             },
-                            ...(filterUdate
-                                ? [
-                                      {
-                                          property: 'update',
-                                          date: { on_or_after: filterUdate },
-                                      },
-                                  ]
-                                : []),
-                            // {
-                            //     property: 'title',
-                            //     title: {
-                            //         equals: '생성기(generate) 패턴',
-                            //     },
-                            // },
                         ],
                     },
-                    sorts: [
-                        {
-                            property: 'update',
-                            direction: 'descending',
-                        },
-                    ],
                 });
             // pageId 리스트 업데이트
             this.pageIds = response.results.map((page) => ({

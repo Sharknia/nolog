@@ -71,7 +71,7 @@ export class Page {
         page.pageUrl = `${subDirPath}${
             page.pageTitle
                 ?.trim()
-                .replace(/[^가-힣\w\-_~]/g, '') //한글, 영어, 숫자, '-', '_', '.', '~'를 제외한 모든 문자 제거
+                .replace(/[^가-힣\w\s\-_~]/g, '') //한글, 영어, 숫자, 공백, '-', '_', '.', '~'를 제외한 모든 문자 제거
                 .replace(/\s+/g, '-') ?? // 공백을 하이픈으로 치환
             ''
         }`;
@@ -199,7 +199,7 @@ export class Page {
         for (const key of Object.keys(properties)) {
             const property = properties[key];
             //페이지 타이틀 저장
-            if (key == 'title' || key == '제목') {
+            if (key.toLowerCase() == 'title' || key == '제목') {
                 this.pageTitle = property.title[0]?.plain_text;
                 //url 변형 추가해야함
             }

@@ -199,13 +199,20 @@ export class MarkdownConverter {
     }
 
     private convertCode(codeBlock: any): string {
-        const codeText = codeBlock.rich_text
+        const codeLines = codeBlock.rich_text
             .map((textElement: any) => textElement.plain_text)
-            .join('');
+            .join('')
+            .split('\n');
 
         const language = codeBlock.language || '';
+        const indent = this.generateIndent();
 
-        return `\`\`\`${language}\n${codeText}\n\`\`\`\n\n`;
+        // 각 코드 라인에 들여쓰기 적용 및 타입 명시
+        const indentedCodeLines = codeLines
+            .map((line: string) => `${indent}${line}`)
+            .join('\n');
+
+        return `\`\`\`${language}\n${indentedCodeLines}\n${indent}\`\`\`\n\n`;
     }
 
     private convertDivider(): string {
@@ -310,14 +317,14 @@ export class MarkdownConverter {
         const leadingSpace = textElement.plain_text.match(/^\s*/)[0];
         const trailingSpace = textElement.plain_text.match(/\s*$/)[0];
 
-        let textContent = this.escapeMarkdownUnderscores(
-            textElement.plain_text.trim(),
-        );
+        let textContent = textElement.plain_text.trim();
 
         // 코드 스타일이 적용된 경우 다른 스타일 적용을 건너뛴다.
         if (textElement.annotations.code) {
             textContent = `\`${textContent}\``;
         } else {
+            let textContent = textElement.plain_text.trim();
+
             if (textElement.annotations.bold) {
                 textContent = `**${textContent}**`;
             }

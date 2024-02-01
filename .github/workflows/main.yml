@@ -9,6 +9,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Checkout Blog Repository
+      uses: actions/checkout@v2
+      with:
+        repository: 'Sharknia/Sharknia.github.io'
+        token: ${{ secrets.GITTOKEN }}
+        path: 'blog-repo'
+
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
@@ -31,3 +38,13 @@ jobs:
         BLOG_URL: ${{ env.BLOG_URL }}
         SAVE_DIR: ${{ env.SAVE_DIR }}
         SAVE_SUB_DIR: ${{ env.SAVE_SUB_DIR }}
+
+    - name: Set Git remote URL with token and Commit and Push Changes
+      run: |
+        cd blog-repo
+        git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
+        git config user.name 'Sharknia'
+        git config user.email 'zel@kakao.com'
+        git add .
+        git commit -m "Update blog contents" || echo "No changes to commit"
+        git push

@@ -3,22 +3,25 @@ name: Run TypeScript
 on: [push, pull_request]
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
+    run:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-    - name: Use Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '18'
 
-    - name: Install Dependencies
-      run: npm ci
+            - name: Install Dependencies
+              run: npm install
 
-    - name: Build
-      run: npx tsc
+            - name: Install TypeScript
+              run: npm install --save-dev typescript
 
-    - name: Run Script
-      run: node ./dist/index.js
+            - name: Build
+              run: npx tsc
+
+            - name: Run Script
+              run: node ./dist/index.js

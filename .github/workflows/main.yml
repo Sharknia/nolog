@@ -25,3 +25,9 @@ jobs:
 
     - name: Run Script
       run: node ./index.js
+      env:
+        NOTION_KEY: ${{ secrets.NOTION_KEY }}
+        NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        BLOG_URL: ${{ env.BLOG_URL }}
+        SAVE_DIR: ${{ env.SAVE_DIR }}
+        SAVE_SUB_DIR: ${{ env.SAVE_SUB_DIR }}

@@ -35,9 +35,9 @@ jobs:
       env:
         NOTION_KEY: ${{ secrets.NOTION_KEY }}
         NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-        BLOG_URL: ${{ env.BLOG_URL }}
-        SAVE_DIR: ${{ env.SAVE_DIR }}
-        SAVE_SUB_DIR: ${{ env.SAVE_SUB_DIR }}
+        BLOG_URL: ${{ vars.BLOG_URL }}
+        SAVE_DIR: ${{ vars.SAVE_DIR }}
+        SAVE_SUB_DIR: ${{ vars.SAVE_SUB_DIR }}
 
     - name: Set Git remote URL with token and Commit and Push Changes
       run: |

@@ -1,4 +1,5 @@
 import { EnvConfig } from '../utils/envConfig';
+import { MetadataManager } from '../utils/metadataManager';
 import { NotionAPI } from '../utils/notionapi';
 import { DataBase } from './database';
 import { Page } from './page';
@@ -11,6 +12,7 @@ export class Posting {
     public notionApi?: NotionAPI;
     public EnvConfig?: EnvConfig;
 
+    private metadataManager?: MetadataManager;
     private constructor() {}
 
     public static create(): Posting {
@@ -23,6 +25,7 @@ export class Posting {
     public async start(): Promise<void> {
         console.log('[posting.ts] start!');
         try {
+            this.metadataManager = MetadataManager.getInstance();
             this.EnvConfig = EnvConfig.create();
             const notionkey: string = this.EnvConfig.notionKey || '';
             const databaseid: string = this.EnvConfig.databaseid || '';

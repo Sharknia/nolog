@@ -3,6 +3,7 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 import { EnvConfig } from '../utils/envConfig';
 import { MarkdownConverter } from '../utils/markdownConverter';
+import { MetadataManager } from '../utils/metadataManager';
 import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
 import { Block } from './block';
@@ -18,10 +19,13 @@ export class Page {
     public contentMarkdown?: string;
 
     private envConfig: EnvConfig;
+    private metadataManager?: MetadataManager;
+
     private constructor(pageId: string, notion: NotionClientWithRetry) {
         this.pageId = pageId;
         this.notion = notion;
         this.envConfig = EnvConfig.create();
+        this.metadataManager = MetadataManager.getInstance();
     }
 
     private async init(page: Page) {

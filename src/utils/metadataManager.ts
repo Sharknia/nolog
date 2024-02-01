@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-const METADATA_FILE_PATH = './metadata/pageMetadata.json';
+const METADATA_FILE_PATH = './pageMetadata.json';
 
 interface PageMetadata {
     url: string;

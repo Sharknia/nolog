@@ -25,28 +25,12 @@ export class DataBase {
             const notionApi: NotionAPI = await NotionAPI.create();
 
             this.instance = new DataBase(notionApi.client, databaseid);
-            if (filterUdate === 'lastest') {
-                // KST로 현재 시간 설정
-                const nowInKST = new Date(
-                    new Date().toLocaleString('en-US', {
-                        timeZone: 'Asia/Seoul',
-                    }),
-                );
-                // KST에서 24시간을 뺌
-                nowInKST.setHours(nowInKST.getHours() - 36);
-                // UTC로 변환
-                filterUdate = nowInKST.toISOString().split('T')[0];
-            }
-            this.instance.database = await this.instance.queryDatabase(
-                filterUdate,
-            );
+            this.instance.database = await this.instance.queryDatabase();
         }
         return this.instance;
     }
 
-    public async queryDatabase(
-        filterUdate?: string,
-    ): Promise<QueryDatabaseResponse> {
+    public async queryDatabase(): Promise<QueryDatabaseResponse> {
         try {
             const response: QueryDatabaseResponse =
                 await this.notion.databasesQuery({

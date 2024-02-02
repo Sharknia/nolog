@@ -87,6 +87,7 @@ export class MetadataManager {
                     METADATA_FILE_PATH,
                     JSON.stringify(this.metadata, null, 2),
                 );
+                console.log('메타데이터 파일 저장 성공:', this.metadata);
             } catch (error) {
                 console.error('메타데이터 파일 저장 오류:', error);
             }

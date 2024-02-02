@@ -80,7 +80,6 @@ export class Page {
             ''
         }`;
         page.pageIdx = page.properties['IDX'] as string;
-        console.log(`[page.pageUrl] ${page.pageUrl}`);
     }
 
     /**

@@ -36,11 +36,17 @@ export class DataBase {
                 await this.notion.databasesQuery({
                     database_id: this.databaseId,
                     filter: {
-                        and: [
+                        or: [
                             {
                                 property: '상태',
                                 select: {
                                     equals: 'Ready',
+                                },
+                            },
+                            {
+                                property: '상태',
+                                select: {
+                                    equals: 'ToBeDeleted',
                                 },
                             },
                         ],

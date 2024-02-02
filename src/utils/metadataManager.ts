@@ -68,6 +68,7 @@ export class MetadataManager {
             this.metadata = {};
         }
         this.metadata[pageIdx] = pageData;
+        console.log(`메타 데이터 업데이트 [${pageIdx}]`);
     }
 
     /**

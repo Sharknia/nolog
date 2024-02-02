@@ -11,3 +11,5 @@ node_modules
 .vscode/
 
 contents/
+# 깃허브 액션에서 실제 블로그가 추가 될 디렉토리
+blog-repo/

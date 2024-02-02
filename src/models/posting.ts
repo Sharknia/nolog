@@ -25,7 +25,7 @@ export class Posting {
     public async start(): Promise<void> {
         console.log('[posting.ts] start!');
         try {
-            this.metadataManager = MetadataManager.getInstance();
+            this.metadataManager = await MetadataManager.getInstance();
             this.EnvConfig = EnvConfig.create();
             const notionkey: string = this.EnvConfig.notionKey || '';
             const databaseid: string = this.EnvConfig.databaseid || '';

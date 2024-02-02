@@ -25,7 +25,6 @@ export class Page {
         this.pageId = pageId;
         this.notion = notion;
         this.envConfig = EnvConfig.create();
-        this.metadataManager = MetadataManager.getInstance();
     }
 
     private async init(page: Page) {
@@ -33,6 +32,7 @@ export class Page {
         const properties = await page.getProperties();
         // 페이지의 프로퍼티에서 데이터를 추출합니다.
         page.properties = await page.extractDataFromProperties(properties);
+        page.metadataManager = await MetadataManager.getInstance();
 
         let subDirPath = '';
         // saveSubDir 환경 변수가 null이 아닌 경우

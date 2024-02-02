@@ -22,9 +22,10 @@ export class MetadataManager {
      * 인스턴스를 반환하는 메서드입니다.
      * @returns {MetadataManager} MetadataManager 인스턴스
      */
-    public static getInstance(): MetadataManager {
+    public static async getInstance(): Promise<MetadataManager> {
         if (!this.instance) {
             this.instance = new MetadataManager();
+            await this.instance.loadMetadata();
         }
         return this.instance;
     }
@@ -37,6 +38,7 @@ export class MetadataManager {
         try {
             const data = await fs.readFile(METADATA_FILE_PATH, 'utf8');
             this.metadata = JSON.parse(data) as Metadata;
+            console.log('메타데이터 파일 읽기 성공:', this.metadata);
         } catch (error) {
             console.error('메타데이터 파일 읽기 오류:', error);
             this.metadata = {};

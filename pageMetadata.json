@@ -1,1 +1,248 @@
-{}
+{
+  "NUM-119": {
+    "path": "Typescript의-열거형"
+  },
+  "NUM-113": {
+    "path": "Pydantic-Model의-응용"
+  },
+  "NUM-110": {
+    "path": "NotionAPI를-활용한-자동-포스팅9"
+  },
+  "NUM-106": {
+    "path": "NotionAPI를-활용한-자동-포스팅8"
+  },
+  "NUM-99": {
+    "path": "DataTable-클래스"
+  },
+  "NUM-98": {
+    "path": "vscode-quick-Suggestions"
+  },
+  "NUM-95": {
+    "path": "NotionAPI를-활용한-자동-포스팅7"
+  },
+  "NUM-94": {
+    "path": "Sqlalchemy의-func"
+  },
+  "NUM-85": {
+    "path": "PostgreSQL-Advisory-Locks-트랜잭션-레벨에서-구현"
+  },
+  "NUM-84": {
+    "path": "동시성-제어문제-해결"
+  },
+  "NUM-81": {
+    "path": "PynamoDB와-boto3-PynamoDB의-커넥션"
+  },
+  "NUM-80": {
+    "path": "aiohttp"
+  },
+  "NUM-79": {
+    "path": "FastAPI에서-데코레이터와-Dependency"
+  },
+  "NUM-78": {
+    "path": "FastAPI와-asyncio"
+  },
+  "NUM-77": {
+    "path": "생성기generate-패턴"
+  },
+  "NUM-76": {
+    "path": "FastAPI의-데코레이터"
+  },
+  "NUM-75": {
+    "path": "FastAPI"
+  },
+  "NUM-74": {
+    "path": "Pydantic-모델"
+  },
+  "NUM-73": {
+    "path": "DynamoDB의-동시성-제어Concurrency-Control"
+  },
+  "NUM-72": {
+    "path": "Poetry"
+  },
+  "NUM-71": {
+    "path": "Blue-Green-Deploy-전략"
+  },
+  "NUM-70": {
+    "path": "CloudFront"
+  },
+  "NUM-69": {
+    "path": "AWS-ECSElastic-Container-Service"
+  },
+  "NUM-68": {
+    "path": "vercel-배포-자동화"
+  },
+  "NUM-67": {
+    "path": "FastAPI와-DDD"
+  },
+  "NUM-66": {
+    "path": "__post_init__"
+  },
+  "NUM-65": {
+    "path": "dataclass"
+  },
+  "NUM-64": {
+    "path": "Unit-Test단위-테스트"
+  },
+  "NUM-63": {
+    "path": "브랜치-관리-전략"
+  },
+  "NUM-62": {
+    "path": "TypeError-non-default-argument-content-follows-default-argument"
+  },
+  "NUM-61": {
+    "path": "NoSQL"
+  },
+  "NUM-60": {
+    "path": "Dynamo-DB"
+  },
+  "NUM-59": {
+    "path": "REST"
+  },
+  "NUM-58": {
+    "path": "ColdStart"
+  },
+  "NUM-57": {
+    "path": "AWS-API-Gateway"
+  },
+  "NUM-56": {
+    "path": "Serverless"
+  },
+  "NUM-55": {
+    "path": "NotionAPI를-활용한-자동-포스팅2"
+  },
+  "NUM-54": {
+    "path": "Factory-Pattern"
+  },
+  "NUM-53": {
+    "path": "네이밍-규칙naming-conventions"
+  },
+  "NUM-52": {
+    "path": "NotionAPI를-활용한-자동-포스팅"
+  },
+  "NUM-51": {
+    "path": "Typescript-시작하기"
+  },
+  "NUM-50": {
+    "path": "gitignore"
+  },
+  "NUM-48": {
+    "path": "Notion-API2"
+  },
+  "NUM-47": {
+    "path": "Branch"
+  },
+  "NUM-46": {
+    "path": "npx"
+  },
+  "NUM-45": {
+    "path": "githubio-자동배포"
+  },
+  "NUM-44": {
+    "path": "githubio를-이용한-블로그"
+  },
+  "NUM-43": {
+    "path": "Notion-API1"
+  },
+  "NUM-42": {
+    "path": "print와-pprint"
+  },
+  "NUM-41": {
+    "path": "Python-venv-Windows"
+  },
+  "NUM-40": {
+    "path": "트래픽-튜닝"
+  },
+  "NUM-39": {
+    "path": "PRG-패턴-PostRedirectGet"
+  },
+  "NUM-38": {
+    "path": "정규화와-역정규화"
+  },
+  "NUM-37": {
+    "path": "무료-웹-호스팅-비교"
+  },
+  "NUM-36": {
+    "path": "Nuget-패키지-dll-추출"
+  },
+  "NUM-35": {
+    "path": "웹-사이트-프로젝트-vs-웹-응용-프로그램-프로젝트"
+  },
+  "NUM-34": {
+    "path": "NestJS-설치"
+  },
+  "NUM-33": {
+    "path": "NestJS의-디렉토리-구조"
+  },
+  "NUM-32": {
+    "path": "MORETHAN-LOG-수정"
+  },
+  "NUM-31": {
+    "path": "var와-letconst"
+  },
+  "NUM-30": {
+    "path": "RDB관계형-데이터베이스-RDBMS"
+  },
+  "NUM-29": {
+    "path": "DB-튜닝-경험"
+  },
+  "NUM-28": {
+    "path": "MORETHAN-LOG-설치"
+  },
+  "NUM-27": {
+    "path": "NestJS-소개"
+  },
+  "NUM-26": {
+    "path": "JavaScript-클로저"
+  },
+  "NUM-25": {
+    "path": "JavaScript의-변수"
+  },
+  "NUM-24": {
+    "path": "JavaScript의-타입-변환과-단축-평가"
+  },
+  "NUM-23": {
+    "path": "JavaScript-기본-문법"
+  },
+  "NUM-22": {
+    "path": "JavaScript의-특징-브라우저-동작-원리"
+  },
+  "NUM-21": {
+    "path": "화상상담을-위한-Janus-구성"
+  },
+  "NUM-20": {
+    "path": "NotionAPI를-활용한-자동-포스팅6"
+  },
+  "NUM-18": {
+    "path": "Sqlalchemy에서의-트랜잭션-격리-수준-구현"
+  },
+  "NUM-17": {
+    "path": "트랜잭션-격리-수준Transaction-Isolation-Level"
+  },
+  "NUM-16": {
+    "path": "단축어로-SLACK-프로필-변경하기"
+  },
+  "NUM-15": {
+    "path": "FastAPI에서-Postgresql의-커넥션-관리"
+  },
+  "NUM-14": {
+    "path": "Sqlalchemy-비동기-엔진에서의-Postgresql-Pooler"
+  },
+  "NUM-13": {
+    "path": "SqlAlchemy의-QueuePool"
+  },
+  "NUM-12": {
+    "path": "Union-Type"
+  },
+  "NUM-11": {
+    "path": "우분투-용량-관리"
+  },
+  "NUM-10": {
+    "path": "NotionAPI를-활용한-자동-포스팅5"
+  },
+  "NUM-9": {
+    "path": "NotionAPI를-활용한-자동-포스팅4"
+  },
+  "NUM-8": {
+    "path": "NotionAPI를-활용한-자동-포스팅3"
+  }
+}

@@ -1,21 +1,25 @@
 import { promises as fs } from 'fs';
+import { join } from 'path';
+import { EnvConfig } from './envConfig';
 
 const METADATA_FILE_PATH = './pageMetadata.json';
 
 interface PageMetadata {
-    url: string;
+    path: string;
 }
 
 interface Metadata {
-    [pageId: string]: PageMetadata;
+    [pageIdx: string]: PageMetadata;
 }
 
 export class MetadataManager {
     private static instance: MetadataManager;
     private metadata: Metadata | null;
+    private envConfig: EnvConfig;
 
     private constructor() {
         this.metadata = null;
+        this.envConfig = EnvConfig.create();
     }
 
     /**
@@ -56,23 +60,23 @@ export class MetadataManager {
     /**
      * 페이지 메타데이터를 업데이트합니다.
      *
-     * @param pageId 페이지 식별자
+     * @param pageIdx 페이지 식별자
      * @param pageData 페이지 메타데이터
      */
-    public updatePageMetadata(pageId: string, pageData: PageMetadata): void {
+    public updatePageMetadata(pageIdx: string, pageData: PageMetadata): void {
         if (!this.metadata) {
             this.metadata = {};
         }
-        this.metadata[pageId] = pageData;
+        this.metadata[pageIdx] = pageData;
     }
 
     /**
      * 페이지 메타데이터를 삭제합니다.
-     * @param pageId 삭제할 페이지의 ID
+     * @param pageIdx 삭제할 페이지의 ID
      */
-    public deletePageMetadata(pageId: string): void {
-        if (this.metadata && this.metadata[pageId]) {
-            delete this.metadata[pageId];
+    public deletePageMetadata(pageIdx: string): void {
+        if (this.metadata && this.metadata[pageIdx]) {
+            delete this.metadata[pageIdx];
         }
     }
 
@@ -87,9 +91,29 @@ export class MetadataManager {
                     METADATA_FILE_PATH,
                     JSON.stringify(this.metadata, null, 2),
                 );
-                console.log('메타데이터 파일 저장 성공:', this.metadata);
+                console;
             } catch (error) {
                 console.error('메타데이터 파일 저장 오류:', error);
+            }
+        }
+    }
+
+    /**
+     * 지정된 페이지 인덱스에 대한 메타데이터를 삭제합니다.
+     * @param pageIdx 삭제할 페이지 인덱스
+     * @returns 삭제 작업이 완료된 후에는 아무 값도 반환하지 않습니다.
+     */
+    public async deleteFromMetadata(pageIdx: string): Promise<void> {
+        if (this.metadata && this.metadata[pageIdx]) {
+            let dir = join(
+                this.envConfig.saveDir!,
+                this.metadata[pageIdx].path,
+            );
+            try {
+                await fs.unlink(dir);
+                console.log('파일 삭제 성공:', dir);
+            } catch (error) {
+                console.error('파일 삭제 오류:', error);
             }
         }
     }

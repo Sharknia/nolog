@@ -7,6 +7,7 @@ import { MetadataManager } from '../utils/metadataManager';
 import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
 import { Block } from './block';
+import { PageStatus } from './enums';
 import { PropertyValue } from './types';
 
 export class Page {
@@ -17,6 +18,7 @@ export class Page {
     public pageTitle?: string;
     public pageUrl?: string;
     public contentMarkdown?: string;
+    public pageIdx?: string;
 
     private envConfig: EnvConfig;
     private metadataManager?: MetadataManager;
@@ -77,29 +79,46 @@ export class Page {
                 .replace(/\s+/g, '-') ?? // 공백을 하이픈으로 치환
             ''
         }`;
+        page.pageIdx = page.properties['IDX'] as string;
         console.log(`[page.pageUrl] ${page.pageUrl}`);
     }
 
+    /**
+     * 페이지를 생성합니다.
+     *
+     * @param pageId 페이지의 식별자
+     * @returns 생성된 페이지 객체
+     * @throws 페이지 생성 중에 발생한 오류
+     */
     public static async create(pageId: string) {
         const notionApi: NotionAPI = await NotionAPI.create();
         const page: Page = new Page(pageId, notionApi.client);
         MarkdownConverter.imageCounter = 0;
         await page.init(page);
-        console.log(`[page.ts] start - pageTitle : ${page.pageTitle}`);
-        // console.log(
-        //     `[page.ts] start - properties : ${JSON.stringify(
-        //         page.properties,
-        //         null,
-        //         2,
-        //     )}`,
-        // );
-
-        page.contentMarkdown = await page.fetchAndProcessBlocks();
-        // console.log(
-        //     `[page.ts] fetchAndProcessBlocks - markdownContent : ${page.contentMarkdown}`,
-        // );
-        await page.printMarkDown();
-        return page;
+        const status = page.properties!['상태'];
+        console.log(
+            `[page.ts] start - pageTitle : (${status})${page.pageTitle}`,
+        );
+        // 저장하기 전에도 기존 파일을 삭제한다. 타이틀이 달라진 update 일 수 있기 때문이다.
+        await page.metadataManager?.deleteFromMetadata(page.pageIdx!);
+        if (status === PageStatus.ToBeDeleted) {
+            // 페이지가 삭제될 예정인 경우
+            await page.metadataManager?.deletePageMetadata(page.pageIdx!);
+            await page.updatePageStatus(PageStatus.Deleted);
+            return page;
+        } else if (status === PageStatus.Ready) {
+            // 포스팅이 준비된 경우
+            page.contentMarkdown = await page.fetchAndProcessBlocks();
+            await page.printMarkDown();
+            await page.metadataManager?.updatePageMetadata(page.pageIdx!, {
+                path: page.pageUrl!,
+            });
+            await page.updatePageStatus(PageStatus.Updated);
+            return page;
+        } else {
+            console.error(`[page.ts] start - status : ${status}`);
+            throw new Error(`[page.ts] start - status : ${status}`);
+        }
     }
 
     public static async getSimpleData(pageId: string) {
@@ -112,8 +131,11 @@ export class Page {
         };
     }
 
+    /**
+     * contentMarkdown과 properties의 내용을 마크다운 파일로 저장한다.
+     * @returns {Promise<void>} Promise 객체
+     */
     public async printMarkDown() {
-        //contentMarkdown과 properties의 내용을 마크다운 파일로 저장한다.
         try {
             // 파일 이름 설정 (페이지 제목으로)
             const filename = `${this.pageTitle}.md`;
@@ -130,7 +152,6 @@ export class Page {
             // 결합된 내용을 파일에 쓰기 (이미 존재하는 경우 덮어쓰기)
             await fs.writeFile(filePath, fullMarkdown);
             console.log(`[page.ts] Markdown 파일 저장됨: ${filePath}`);
-            await this.updatePageStatus();
         } catch (error) {
             console.error(`[page.ts] 파일 저장 중 오류 발생: ${error}`);
         }
@@ -216,11 +237,14 @@ export class Page {
                         );
                         break;
                     case 'rich_text':
-                        result[key] = property.rich_text[0]?.plain_text;
+                        result[key] = property.rich_text
+                            .map((text: any) => text.plain_text)
+                            .join('');
                         break;
                     case 'last_edited_time':
-                        const dateObj = new Date(property.last_edited_time);
-                        result[key] = dateObj.toISOString().split('T')[0]; // format: "yyyy-MM-dd"
+                        result[key] = new Date(
+                            property.last_edited_time,
+                        ).toISOString(); // 시간 전체를 ISO 8601 형식으로 출력
                         break;
                     case 'date':
                         result[key] = property.date.start;
@@ -229,24 +253,65 @@ export class Page {
                         result[key] = property.select.name;
                         break;
                     case 'title':
-                        result[key] = property.title[0]?.plain_text;
+                        result[key] = property.title
+                            .map((text: any) => text.plain_text)
+                            .join('');
+                        break;
+                    case 'number':
+                        result[key] = property.number;
+                        break;
+                    case 'checkbox':
+                        result[key] = property.checkbox;
+                        break;
+                    case 'url':
+                        result[key] = property.url;
+                        break;
+                    case 'email':
+                        result[key] = property.email;
+                        break;
+                    case 'phone_number':
+                        result[key] = property.phone_number;
+                        break;
+                    case 'people':
+                        result[key] = property.people.map(
+                            (person: any) => person.name,
+                        );
+                        break;
+                    case 'files':
+                        result[key] = property.files.map(
+                            (file: any) => file.name,
+                        );
+                        break;
+                    case 'unique_id':
+                        result[key] =
+                            (property.unique_id.prefix
+                                ? property.unique_id.prefix + '-'
+                                : '') + property.unique_id.number;
+
                         break;
                 }
-            } catch {}
+            } catch (error) {
+                console.error(
+                    `[page.ts] Failed to extract property ${key}: ${error}`,
+                );
+            }
         }
 
         return result;
     }
 
-    private async updatePageStatus() {
+    /**
+     * 페이지의 상태를 업데이트합니다.
+     * @param status 업데이트 할 페이지 상태입니다.
+     */
+    private async updatePageStatus(status: PageStatus) {
         try {
-            // Notion API를 사용하여 페이지의 상태를 업데이트합니다.
             await this.notion.pages.update({
                 page_id: this.pageId,
                 properties: {
                     상태: {
                         type: 'select',
-                        select: { name: 'Updated' },
+                        select: { name: status },
                     },
                 },
             });

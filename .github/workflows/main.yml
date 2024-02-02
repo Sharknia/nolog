@@ -1,8 +1,6 @@
 name: Run TypeScript
 
 on: 
-  push:
-  pull_request:
   schedule:
     - cron: '0 * * * *'
 

@@ -1,6 +1,7 @@
 import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 import { NotionAPI } from '../utils/notionapi';
+import { PageStatus } from './enums';
 
 export class DataBase {
     private static instance: DataBase | null = null;
@@ -40,13 +41,13 @@ export class DataBase {
                             {
                                 property: '상태',
                                 select: {
-                                    equals: 'Ready',
+                                    equals: PageStatus.Ready,
                                 },
                             },
                             {
                                 property: '상태',
                                 select: {
-                                    equals: 'ToBeDeleted',
+                                    equals: PageStatus.ToBeDeleted,
                                 },
                             },
                         ],

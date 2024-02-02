@@ -111,7 +111,7 @@ export class MetadataManager {
                 this.metadata[pageIdx].path,
             );
             try {
-                await fs.unlink(dir);
+                await fs.rm(dir);
                 console.log('파일 삭제 성공:', dir);
             } catch (error) {
                 console.error('파일 삭제 오류:', error);

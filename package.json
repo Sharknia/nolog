@@ -15,5 +15,8 @@
     "axios-retry": "^4.0.0",
     "dotenv": "^16.3.1"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
 }

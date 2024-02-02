@@ -42,7 +42,15 @@ jobs:
         BLOG_URL: ${{ vars.BLOG_URL }}
         SAVE_DIR: ${{ vars.SAVE_DIR }}
         SAVE_SUB_DIR: ${{ vars.SAVE_SUB_DIR }}
-
+        
+    - name: Commit and Push Changes to Current Repository
+      run: |
+        git config --global user.name 'Sharknia'
+        git config --global user.email 'zel@kakao.com'
+        git add .
+        git commit -m "Update contents" || echo "No changes to commit in current repo"
+        git push
+        
     - name: Set Git remote URL with token and Commit and Push Changes
       run: |
         cd blog-repo

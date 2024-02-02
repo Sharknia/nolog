@@ -4,5 +4,5 @@ export enum PageStatus {
     Writing = 'Writing', // 작성중
     Ready = 'Ready', // 포스팅 준비됨
     Updated = 'Updated', // 업데이트됨
-    ToBoDeleted = 'ToBoDeleted', // 삭제될 예정
+    ToBeDeleted = 'ToBeDeleted', // 삭제될 예정
 }

@@ -46,11 +46,12 @@ jobs:
         
     - name: Commit and Push Changes to Current Repository
       run: |
-        git config --global user.name 'Sharknia'
-        git config --global user.email 'zel@kakao.com'
+        git config user.name 'Sharknia'
+        git config user.email 'zel@kakao.com'
         git add .
         git commit -m "Update contents" || echo "No changes to commit in current repo"
-        git push
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sharknia/Notion-to-Markdown.git
+        git push origin HEAD:master
         
     - name: Set Git remote URL with token and Commit and Push Changes
       run: |

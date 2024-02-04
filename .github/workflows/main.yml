@@ -59,17 +59,26 @@ jobs:
                   git push origin HEAD:master
 
             - name: Set Git remote URL with token and Commit and Push Changes
+              id: commit_changes # 이 단계에 ID 부여
               run: |
                   cd blog-repo
                   git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
                   git config user.name 'Sharknia'
                   git config user.email 'zel@kakao.com'
                   git add .
-                  git commit -m "Auto Update blog contents" || echo "No changes to commit"
+                  CHANGES=$(git status --porcelain)
+                  if [ -n "$CHANGES" ]; then
+                    git commit -m "Auto Update blog contents"
+                    echo "::set-output name=changes_detected::true"
+                  else
+                    echo "No changes to commit"
+                    echo "::set-output name=changes_detected::false"
+                  fi
                   git push
 
     blog-deploy:
         needs: blog-update-with-notion # 이 작업은 blog-update-with-notion 가 끝나야 진행합니다.
+        if: needs.blog-update-with-notion.outputs.changes_detected  == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Blog Repository

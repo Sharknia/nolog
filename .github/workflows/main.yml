@@ -75,6 +75,7 @@ jobs:
                     echo "No changes to commit"
                     echo "CHANGES_DETECTED=false" >> $GITHUB_OUTPUT
                   fi
+                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
                   git push
 
     log-changes-detected:

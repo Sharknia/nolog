@@ -79,17 +79,8 @@ jobs:
                   fi
                   git push
 
-    log-changes-detected:
-        runs-on: ubuntu-latest
-        needs: blog-update-with-notion
-        steps:
-            - name: Log changes_detected output
-              run: |
-                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
-                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.CHANGES_DETECTED }}"
-
     blog-deploy:
-        needs: log-changes-detected
+        needs: blog-update-with-notion
         if: needs.blog-update-with-notion.outputs.changes_detected == 'true'
         runs-on: ubuntu-latest
         steps:

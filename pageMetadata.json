@@ -247,5 +247,17 @@
   },
   "NUM-117": {
     "path": "NotionAPI를-활용한-자동-포스팅10"
+  },
+  "NUM-124": {
+    "path": "Github-Actions-Workflow-수동으로-실행하기"
+  },
+  "NUM-123": {
+    "path": "Github-Actions-Job---needs"
+  },
+  "NUM-122": {
+    "path": "Github-Actions"
+  },
+  "NUM-121": {
+    "path": "Github-Action-Output"
   }
 }

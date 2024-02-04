@@ -15,6 +15,8 @@ on:
 jobs:
     blog-update-with-notion:
         runs-on: ubuntu-latest
+        outputs:
+            changes_detected: ${{ steps.commit_changes.outputs.CHANGES_DETECTED }}
 
         steps:
             - uses: actions/checkout@v2
@@ -75,7 +77,6 @@ jobs:
                     echo "No changes to commit"
                     echo "CHANGES_DETECTED=false" >> $GITHUB_OUTPUT
                   fi
-                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
                   git push
 
     log-changes-detected:
@@ -83,11 +84,13 @@ jobs:
         needs: blog-update-with-notion
         steps:
             - name: Log changes_detected output
-              run: echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
+              run: |
+                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
+                  echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.CHANGES_DETECTED }}"
 
     blog-deploy:
         needs: log-changes-detected
-        if: needs.blog-update-with-notion.outputs.CHANGES_DETECTED == 'true'
+        if: needs.blog-update-with-notion.outputs.changes_detected == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Blog Repository

@@ -1,69 +1,69 @@
 name: Run TypeScript
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-  
-on: 
-  workflow_dispatch:
-  push:
-  pull_request:
-  schedule:
-    - cron: '0 * * * *'
+    contents: write
+    issues: write
+    pull-requests: write
+
+on:
+    workflow_dispatch:
+    push:
+    pull_request:
+    # schedule:
+    #   - cron: '0 * * * *'
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
+    run:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-    - name: Checkout Blog Repository
-      uses: actions/checkout@v2
-      with:
-        repository: 'Sharknia/Sharknia.github.io'
-        token: ${{ secrets.GITTOKEN }}
-        path: 'blog-repo'
+            - name: Checkout Blog Repository
+              uses: actions/checkout@v2
+              with:
+                  repository: 'Sharknia/Sharknia.github.io'
+                  token: ${{ secrets.GITTOKEN }}
+                  path: 'blog-repo'
 
-    - name: Use Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '18'
 
-    - name: Install Dependencies
-      run: npm install
+            - name: Install Dependencies
+              run: npm install
 
-    - name: Install TypeScript
-      run: npm install --save-dev typescript
+            - name: Install TypeScript
+              run: npm install --save-dev typescript
 
-    - name: Build
-      run: npx tsc
+            - name: Build
+              run: npx tsc
 
-    - name: Run Script
-      run: node ./index.js
-      env:
-        NOTION_KEY: ${{ secrets.NOTION_KEY }}
-        NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-        BLOG_URL: ${{ vars.BLOG_URL }}
-        SAVE_DIR: ${{ vars.SAVE_DIR }}
-        SAVE_SUB_DIR: ${{ vars.SAVE_SUB_DIR }}
-        
-    - name: Commit and Push Changes to Current Repository
-      run: |
-        git config user.name 'Sharknia'
-        git config user.email 'zel@kakao.com'
-        git add .
-        git commit -m "Update contents" || echo "No changes to commit in current repo"
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sharknia/Notion-to-Markdown.git
-        git push origin HEAD:master
-        
-    - name: Set Git remote URL with token and Commit and Push Changes
-      run: |
-        cd blog-repo
-        git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
-        git config user.name 'Sharknia'
-        git config user.email 'zel@kakao.com'
-        git add .
-        git commit -m "Update blog contents" || echo "No changes to commit"
-        git push
+            - name: Run Script
+              run: node ./index.js
+              env:
+                  NOTION_KEY: ${{ secrets.NOTION_KEY }}
+                  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+                  BLOG_URL: ${{ vars.BLOG_URL }}
+                  SAVE_DIR: ${{ vars.SAVE_DIR }}
+                  SAVE_SUB_DIR: ${{ vars.SAVE_SUB_DIR }}
+
+            - name: Commit and Push Changes to Current Repository
+              run: |
+                  git config user.name 'Sharknia'
+                  git config user.email 'zel@kakao.com'
+                  git add .
+                  git commit -m "Update contents" || echo "No changes to commit in current repo"
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sharknia/Notion-to-Markdown.git
+                  git push origin HEAD:master
+
+            - name: Set Git remote URL with token and Commit and Push Changes
+              run: |
+                  cd blog-repo
+                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
+                  git config user.name 'Sharknia'
+                  git config user.email 'zel@kakao.com'
+                  git add .
+                  git commit -m "Update blog contents" || echo "No changes to commit"
+                  git push

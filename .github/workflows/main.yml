@@ -69,19 +69,26 @@ jobs:
                   git push
 
     blog-deploy:
-        needs: blog-update-with-notion
+        needs: blog-update-with-notion # 이 작업은 blog-update-with-notion 가 끝나야 진행합니다.
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - name: Checkout Blog Repository
+              uses: actions/checkout@v2
+              with:
+                  repository: 'Sharknia/Sharknia.github.io'
+                  token: ${{ secrets.GITTOKEN }}
+                  path: 'blog-repo'
+
+            - name: Use Node.js
+              uses: actions/setup-node@v2
               with:
                   node-version: 20.3.1
 
             - name: Install node packages
               run: yarn
 
-            # - name: Check lint
-            #   run: yarn check:lint
+            - name: Check lint
+              run: yarn check:lint
 
             - name: Build
               run: yarn build

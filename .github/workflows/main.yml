@@ -9,8 +9,8 @@ on:
     workflow_dispatch:
     push:
     pull_request:
-    # schedule:
-    #   - cron: '0 * * * *'
+    schedule:
+      - cron: '0 * * * *'
 
 jobs:
     blog-update-with-notion:

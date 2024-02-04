@@ -68,6 +68,7 @@ jobs:
                   git add .
                   CHANGES=$(git status --porcelain)
                   if [ -n "$CHANGES" ]; then
+                    echo "Changes detected, committing and pushing to blog repository"
                     git commit -m "Auto Update blog contents"
                     echo "CHANGES_DETECTED=true" >> $GITHUB_OUTPUT
                   else
@@ -76,9 +77,16 @@ jobs:
                   fi
                   git push
 
+    log-changes-detected:
+        runs-on: ubuntu-latest
+        needs: blog-update-with-notion
+        steps:
+            - name: Log changes_detected output
+              run: echo "The changes_detected value is ${{ needs.blog-update-with-notion.outputs.changes_detected }}"
+
     blog-deploy:
-        needs: blog-update-with-notion # 이 작업은 blog-update-with-notion 가 끝나야 진행합니다.
-        if: ${{ needs.blog-update-with-notion.outputs.CHANGES_DETECTED == 'true' }}
+        needs: log-changes-detected
+        if: needs.blog-update-with-notion.outputs.CHANGES_DETECTED == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Blog Repository

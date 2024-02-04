@@ -77,7 +77,6 @@ jobs:
               with:
                   repository: 'Sharknia/Sharknia.github.io'
                   token: ${{ secrets.GITTOKEN }}
-                  path: 'blog-repo'
 
             - name: Use Node.js
               uses: actions/setup-node@v2

@@ -10,7 +10,7 @@ on:
     push:
     pull_request:
     schedule:
-      - cron: '0 * * * *'
+        - cron: '0 * * * *'
 
 jobs:
     blog-update-with-notion:
@@ -69,16 +69,16 @@ jobs:
                   CHANGES=$(git status --porcelain)
                   if [ -n "$CHANGES" ]; then
                     git commit -m "Auto Update blog contents"
-                    echo "::set-output name=changes_detected::true"
+                    echo "CHANGES_DETECTED=true" >> $GITHUB_OUTPUT
                   else
                     echo "No changes to commit"
-                    echo "::set-output name=changes_detected::false"
+                    echo "CHANGES_DETECTED=false" >> $GITHUB_OUTPUT
                   fi
                   git push
 
     blog-deploy:
         needs: blog-update-with-notion # 이 작업은 blog-update-with-notion 가 끝나야 진행합니다.
-        if: needs.blog-update-with-notion.outputs.changes_detected  == 'true'
+        if: ${{ needs.blog-update-with-notion.outputs.CHANGES_DETECTED == 'true' }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Blog Repository

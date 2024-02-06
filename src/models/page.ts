@@ -34,7 +34,7 @@ export class Page {
         const properties = await page.getProperties();
         // 페이지의 프로퍼티에서 데이터를 추출합니다.
         page.properties = await page.extractDataFromProperties(properties);
-        page.metadataManager = await MetadataManager.getInstance();
+        page.metadataManager = await MetadataManager.create();
 
         let subDirPath = '';
         // saveSubDir 환경 변수가 null이 아닌 경우

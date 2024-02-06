@@ -26,7 +26,7 @@ export class MetadataManager {
      * 인스턴스를 반환하는 메서드입니다.
      * @returns {MetadataManager} MetadataManager 인스턴스
      */
-    public static async getInstance(): Promise<MetadataManager> {
+    public static async create(): Promise<MetadataManager> {
         if (!this.instance) {
             this.instance = new MetadataManager();
             await this.instance.loadMetadata();

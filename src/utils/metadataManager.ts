@@ -42,9 +42,12 @@ export class MetadataManager {
         try {
             const data = await fs.readFile(METADATA_FILE_PATH, 'utf8');
             this.metadata = JSON.parse(data) as Metadata;
-            console.log('메타데이터 파일 읽기 성공:', this.metadata);
+            console.log('[metadataManager.ts] 메타데이터 파일 읽기 성공');
         } catch (error) {
-            console.error('메타데이터 파일 읽기 오류:', error);
+            console.error(
+                '[metadataManager.ts] 메타데이터 파일 읽기 오류:',
+                error,
+            );
             this.metadata = {};
         }
     }
@@ -68,7 +71,7 @@ export class MetadataManager {
             this.metadata = {};
         }
         this.metadata[pageIdx] = pageData;
-        console.log(`메타 데이터 업데이트 [${pageIdx}]`);
+        console.log(`[metadataManager.ts] 메타 데이터 업데이트 [${pageIdx}]`);
     }
 
     /**
@@ -92,9 +95,12 @@ export class MetadataManager {
                     METADATA_FILE_PATH,
                     JSON.stringify(this.metadata, null, 2),
                 );
-                console;
+                console.log('[metadataManager.ts] 메타데이터 파일 저장 성공');
             } catch (error) {
-                console.error('메타데이터 파일 저장 오류:', error);
+                console.error(
+                    '[metadataManager.ts] 메타데이터 파일 저장 오류:',
+                    error,
+                );
             }
         }
     }
@@ -112,9 +118,9 @@ export class MetadataManager {
             );
             try {
                 await fs.rm(dir, { recursive: true });
-                console.log('파일 삭제 성공:', dir);
+                console.log('[metadataManager.ts] 파일 삭제 성공:', dir);
             } catch (error) {
-                console.error('파일 삭제 오류:', error);
+                console.error('[metadataManager.ts] 파일 삭제 오류:', error);
             }
         }
     }

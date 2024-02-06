@@ -37,6 +37,7 @@ export class Posting {
                 const page: Page = await Page.create(item.pageId);
             }
             this.metadataManager.saveMetadata();
+            console.log("[posting.ts] 작업 완료")
         } catch (error) {
             console.error('Error creating database instance:', error);
         }

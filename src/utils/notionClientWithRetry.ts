@@ -22,7 +22,9 @@ export class NotionClientWithRetry extends Client {
             return await operation();
         } catch (error) {
             if (retries <= 0) throw error;
-            console.log(`[retryAPI] ${retries} retrying.....`);
+            console.log(
+                `[retryAPI] ${this.maxRetries - retries} retrying.....`,
+            );
             await new Promise((resolve) =>
                 setTimeout(resolve, this.retryDelay),
             );

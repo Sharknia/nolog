@@ -24,7 +24,7 @@ jobs:
             - name: Checkout Blog Repository
               uses: actions/checkout@v2
               with:
-                  repository: 'Sharknia/Sharknia.github.io'
+                  repository: ${{ vars.BLOG_URL }}
                   token: ${{ secrets.GITTOKEN }}
                   path: 'blog-repo'
 
@@ -53,20 +53,20 @@ jobs:
 
             - name: Commit and Push Changes to Current Repository
               run: |
-                  git config user.name 'Sharknia'
-                  git config user.email 'furychick@nate.com'
+                  git config user.name '${{ vars.GIT_USER_NAME }}'
+                  git config user.email '${{ vars.GIT_USER_EMAIL }}'
                   git add .
                   git commit -m "Update metadata" || echo "No changes to commit in current repo"
-                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sharknia/Notion-to-Markdown.git
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USER_NAME }}/Notion-to-Markdown.git
                   git push origin HEAD:master
 
             - name: Set Git remote URL with token and Commit and Push Changes
               id: commit_changes # 이 단계에 ID 부여
               run: |
                   cd blog-repo
-                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
-                  git config user.name 'Sharknia'
-                  git config user.email 'furychick@nate.com'
+                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com${{ vars.BLOG_REPO }}
+                  git config user.name '${{ vars.GIT_USER_NAME }}'
+                  git config user.email '${{ vars.GIT_USER_EMAIL }}'
                   git add .
                   CHANGES=$(git status --porcelain)
                   if [ -n "$CHANGES" ]; then
@@ -87,7 +87,7 @@ jobs:
             - name: Checkout Blog Repository
               uses: actions/checkout@v2
               with:
-                  repository: 'Sharknia/Sharknia.github.io'
+                  repository: '${{ vars.BLOG_REPO }}'
                   token: ${{ secrets.GITTOKEN }}
 
             - name: Use Node.js
@@ -107,10 +107,10 @@ jobs:
             - name: Set up GitHub token
               env:
                   GITHUB_TOKEN: ${{ secrets.GITTOKEN }}
-              run: git config --global user.email "furychick@nate.com" && git config --global user.name "Sharknia"
+              run: git config --global user.email "${{ vars.GIT_USER_EMAIL }}" && git config --global user.name "${{ vars.GIT_USER_NAME }}"
 
             - name: Set Git remote URL with token
-              run: git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
+              run: git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com${{ vars.BLOG_REPO }}
 
             - name: Deploy to GitHub Pages
               run: npx gh-pages -d public

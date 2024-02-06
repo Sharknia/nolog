@@ -64,7 +64,7 @@ jobs:
               id: commit_changes # 이 단계에 ID 부여
               run: |
                   cd blog-repo
-                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com${{ vars.BLOG_REPO }}
+                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/${{ vars.BLOG_REPO }}
                   git config user.name '${{ vars.GIT_USER_NAME }}'
                   git config user.email '${{ vars.GIT_USER_EMAIL }}'
                   git add .

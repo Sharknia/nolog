@@ -54,7 +54,7 @@ jobs:
             - name: Commit and Push Changes to Current Repository
               run: |
                   git config user.name 'Sharknia'
-                  git config user.email 'zel@kakao.com'
+                  git config user.email 'furychick@nate.com'
                   git add .
                   git commit -m "Update metadata" || echo "No changes to commit in current repo"
                   git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sharknia/Notion-to-Markdown.git
@@ -66,7 +66,7 @@ jobs:
                   cd blog-repo
                   git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io
                   git config user.name 'Sharknia'
-                  git config user.email 'zel@kakao.com'
+                  git config user.email 'furychick@nate.com'
                   git add .
                   CHANGES=$(git status --porcelain)
                   if [ -n "$CHANGES" ]; then
@@ -107,7 +107,7 @@ jobs:
             - name: Set up GitHub token
               env:
                   GITHUB_TOKEN: ${{ secrets.GITTOKEN }}
-              run: git config --global user.email "zel@kakao.com" && git config --global user.name "Sharknia"
+              run: git config --global user.email "furychick@nate.com" && git config --global user.name "Sharknia"
 
             - name: Set Git remote URL with token
               run: git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/Sharknia/Sharknia.github.io

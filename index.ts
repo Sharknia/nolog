@@ -1,8 +1,8 @@
+import { NotionAPI } from './src/apis/notionapi';
 import { DataBase } from './src/models/database';
 import { Page } from './src/models/page';
 import { EnvConfig } from './src/utils/envConfig';
 import { MetadataManager } from './src/utils/metadataManager';
-import { NotionAPI } from './src/utils/notionapi';
 
 async function start() {
     console.log('[index.ts] start!');

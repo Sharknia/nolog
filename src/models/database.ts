@@ -1,7 +1,7 @@
 import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
-import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
-import { NotionAPI } from '../utils/notionapi';
-import { PageStatus } from './enums';
+import { PageStatus } from '../types/enums';
+import { NotionClientWithRetry } from '../apis/notionClientWithRetry';
+import { NotionAPI } from '../apis/notionapi';
 
 export class DataBase {
     private static instance: DataBase | null = null;

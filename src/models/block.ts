@@ -1,6 +1,6 @@
 import { GetBlockResponse } from '@notionhq/client/build/src/api-endpoints';
+import { NotionClientWithRetry } from '../apis/notionClientWithRetry';
 import { MarkdownConverter } from '../utils/markdownConverter';
-import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
 
 export class Block {
     private notion: NotionClientWithRetry;

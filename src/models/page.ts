@@ -1,14 +1,14 @@
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { PageStatus } from '../types/enums';
+import { PropertyValue } from '../types/types';
+import { NotionClientWithRetry } from '../apis/notionClientWithRetry';
+import { NotionAPI } from '../apis/notionapi';
 import { EnvConfig } from '../utils/envConfig';
 import { MarkdownConverter } from '../utils/markdownConverter';
 import { MetadataManager } from '../utils/metadataManager';
-import { NotionClientWithRetry } from '../utils/notionClientWithRetry';
-import { NotionAPI } from '../utils/notionapi';
 import { Block } from './block';
-import { PageStatus } from './enums';
-import { PropertyValue } from './types';
 
 export class Page {
     private pageId: string;

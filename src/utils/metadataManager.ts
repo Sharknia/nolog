@@ -41,7 +41,11 @@ export class MetadataManager {
     public async loadMetadata(): Promise<void> {
         try {
             const data = await fs.readFile(METADATA_FILE_PATH, 'utf8');
-            this.metadata = JSON.parse(data) as Metadata;
+            if (data.trim() === '') {
+                this.metadata = {};
+            } else {
+                this.metadata = JSON.parse(data) as Metadata;
+            }
             console.log('[metadataManager.ts] 메타데이터 파일 읽기 성공');
         } catch (error) {
             console.error(

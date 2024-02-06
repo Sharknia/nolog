@@ -259,5 +259,8 @@
   },
   "NUM-121": {
     "path": "Github-Action-Output"
+  },
+  "NUM-116": {
+    "path": "FastAPI의-Pagenation"
   }
 }

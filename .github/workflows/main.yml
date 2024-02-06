@@ -24,7 +24,7 @@ jobs:
             - name: Checkout Blog Repository
               uses: actions/checkout@v2
               with:
-                  repository: ${{ vars.BLOG_URL }}
+                  repository: ${{ vars.BLOG_REPO }}
                   token: ${{ secrets.GITTOKEN }}
                   path: 'blog-repo'
 

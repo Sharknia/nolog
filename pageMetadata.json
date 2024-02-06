@@ -262,5 +262,8 @@
   },
   "NUM-116": {
     "path": "FastAPI의-Pagenation"
+  },
+  "NUM-127": {
+    "path": "Typescript의-Testcode-맛보기"
   }
 }

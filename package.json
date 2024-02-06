@@ -4,7 +4,7 @@
   "description": "Notion Database안에 들어있는 Page들을 Markdown 파일로 변환하는 것을 목표로 합니다.",
   "main": "notionApi.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -12,11 +12,14 @@
     "@notionhq/client": "^2.2.12",
     "@types/node": "^20.5.9",
     "axios": "^1.6.7",
-    "axios-retry": "^4.0.0",
-    "dotenv": "^16.3.1"
+    "axios-retry": "^4.0.0"
   },
   "keywords": [],
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "dotenv": "^16.4.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
   }
 }

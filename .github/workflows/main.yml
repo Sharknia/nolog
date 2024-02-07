@@ -113,7 +113,7 @@ jobs:
               run: git config --global user.email "${{ vars.GIT_USER_EMAIL }}" && git config --global user.name "${{ vars.GIT_USER_NAME }}"
 
             - name: Set Git remote URL with token
-              run: git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com${{ vars.BLOG_REPO }}
+              run: git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/${{ vars.BLOG_REPO }}
 
             - name: Deploy to GitHub Pages
               run: npx gh-pages -d public

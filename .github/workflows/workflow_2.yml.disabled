@@ -1,0 +1,80 @@
+name: Notion to Markdown
+
+permissions:
+    contents: write
+    issues: write
+    pull-requests: write
+
+on:
+    workflow_dispatch:
+    push:
+    pull_request:
+    schedule:
+        - cron: '0 * * * *'
+
+jobs:
+    blog-update-with-notion:
+        runs-on: ubuntu-latest
+        outputs:
+            changes_detected: ${{ steps.commit_changes.outputs.CHANGES_DETECTED }}
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Checkout Blog Repository
+              uses: actions/checkout@v2
+              with:
+                  repository: ${{ vars.BLOG_REPO }}
+                  token: ${{ secrets.GITTOKEN }}
+                  path: 'blog-repo'
+
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '18'
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Install TypeScript
+              run: npm install --save-dev typescript
+
+            - name: Build
+              run: npx tsc
+
+            - name: Run Script
+              run: node ./index.js
+              env:
+                  NOTION_KEY: ${{ secrets.NOTION_KEY }}
+                  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+                  BLOG_URL: ${{ vars.BLOG_URL }}
+                  SAVE_DIR: 'blog-repo/${{ vars.SAVE_DIR }}'
+                  SAVE_SUB_DIR: ${{ vars.SAVE_SUB_DIR }}
+
+            - name: Commit and Push Changes to Current Repository
+              run: |
+                  git config user.name '${{ vars.GIT_USER_NAME }}'
+                  git config user.email '${{ vars.GIT_USER_EMAIL }}'
+                  git add .
+                  git commit -m "Update metadata" || echo "No changes to commit in current repo"
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ vars.GIT_USER_NAME }}/Notion-to-Markdown.git
+                  git push origin HEAD:master
+
+            - name: Set Git remote URL with token and Commit and Push Changes
+              id: commit_changes # 이 단계에 ID 부여
+              run: |
+                  cd blog-repo
+                  git remote set-url origin https://${{ secrets.GITTOKEN }}@github.com/${{ vars.BLOG_REPO }}
+                  git config user.name '${{ vars.GIT_USER_NAME }}'
+                  git config user.email '${{ vars.GIT_USER_EMAIL }}'
+                  git add .
+                  CHANGES=$(git status --porcelain)
+                  if [ -n "$CHANGES" ]; then
+                    echo "Changes detected, committing and pushing to blog repository"
+                    git commit -m "Auto Update blog contents"
+                    echo "CHANGES_DETECTED=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "No changes to commit"
+                    echo "CHANGES_DETECTED=false" >> $GITHUB_OUTPUT
+                  fi
+                  git push

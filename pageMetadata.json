@@ -29,9 +29,6 @@
   "NUM-85": {
     "path": "PostgreSQL-Advisory-Locks-트랜잭션-레벨에서-구현"
   },
-  "NUM-84": {
-    "path": "동시성-제어문제-해결"
-  },
   "NUM-81": {
     "path": "PynamoDB와-boto3-PynamoDB의-커넥션"
   },
@@ -268,5 +265,8 @@
   },
   "NUM-127": {
     "path": "Typescript의-Testcode-맛보기"
+  },
+  "NUM-84": {
+    "path": "동시성-제어문제-해결"
   }
 }

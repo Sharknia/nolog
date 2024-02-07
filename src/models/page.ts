@@ -1,10 +1,10 @@
 import { GetPageResponse } from '@notionhq/client/build/src/api-endpoints';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { PageStatus } from '../types/enums';
-import { PropertyValue } from '../types/types';
 import { NotionClientWithRetry } from '../apis/notionClientWithRetry';
 import { NotionAPI } from '../apis/notionapi';
+import { PageStatus } from '../types/enums';
+import { PropertyValue } from '../types/types';
 import { EnvConfig } from '../utils/envConfig';
 import { MarkdownConverter } from '../utils/markdownConverter';
 import { MetadataManager } from '../utils/metadataManager';

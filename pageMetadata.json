@@ -1,4 +1,7 @@
 {
+  "Owner": {
+    "GIT_USER_NAME": "Sharknia"
+  },
   "NUM-119": {
     "path": "Typescript의-열거형"
   },

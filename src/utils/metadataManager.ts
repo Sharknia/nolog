@@ -8,10 +8,16 @@ interface PageMetadata {
     path: string;
 }
 
-interface Metadata {
-    [pageIdx: string]: PageMetadata;
+interface PageMetadata {
+    path: string;
 }
 
+interface Metadata {
+    Owner: {
+        GIT_USER_NAME: string;
+    };
+    [pageIdx: string]: PageMetadata | { GIT_USER_NAME: string };
+}
 export class MetadataManager {
     private static instance: MetadataManager;
     private metadata: Metadata | null;
@@ -42,17 +48,51 @@ export class MetadataManager {
         try {
             const data = await fs.readFile(METADATA_FILE_PATH, 'utf8');
             if (data.trim() === '') {
-                this.metadata = {};
+                await this.initMetadata();
             } else {
-                this.metadata = JSON.parse(data) as Metadata;
+                const loadedMetadata = JSON.parse(data);
+                // Owner가 존재하는지 및 GIT_USER_NAME이 현재 설정과 일치하는지 검사
+                if (
+                    !loadedMetadata.Owner ||
+                    loadedMetadata.Owner.GIT_USER_NAME !==
+                        this.envConfig.gitUserName
+                ) {
+                    console.log(
+                        '[metadataManager.ts] 메타데이터의 GIT_USER_NAME이 현재 설정과 다릅니다. 메타데이터를 초기화합니다.',
+                    );
+                    await this.initMetadata();
+                } else {
+                    this.metadata = loadedMetadata;
+                    console.log(
+                        '[metadataManager.ts] 메타데이터 파일 읽기 성공',
+                    );
+                }
             }
-            console.log('[metadataManager.ts] 메타데이터 파일 읽기 성공');
         } catch (error) {
             console.error(
-                '[metadataManager.ts] 메타데이터 파일 읽기 오류:',
+                '[metadataManager.ts] 메타데이터 파일 읽기 실패:',
                 error,
             );
-            this.metadata = {};
+            await this.initMetadata();
+        }
+    }
+
+    private async initMetadata(): Promise<void> {
+        try {
+            const initialData: Metadata = {
+                Owner: {
+                    GIT_USER_NAME: this.envConfig.gitUserName!,
+                },
+                // 초기 페이지 메타데이터는 필요에 따라 추가
+            };
+            await fs.writeFile(METADATA_FILE_PATH, JSON.stringify(initialData));
+            this.metadata = initialData;
+            console.log('[metadataManager.ts] 메타데이터 파일 초기화 성공');
+        } catch (error) {
+            console.error(
+                '[metadataManager.ts] 메타데이터 파일 초기화 오류:',
+                error,
+            );
         }
     }
 
@@ -72,9 +112,9 @@ export class MetadataManager {
      */
     public updatePageMetadata(pageIdx: string, pageData: PageMetadata): void {
         if (!this.metadata) {
-            this.metadata = {};
+            this.initMetadata();
         }
-        this.metadata[pageIdx] = pageData;
+        this.metadata![pageIdx] = pageData;
         console.log(`[metadataManager.ts] 메타 데이터 업데이트 [${pageIdx}]`);
     }
 
@@ -115,16 +155,28 @@ export class MetadataManager {
      * @returns 삭제 작업이 완료된 후에는 아무 값도 반환하지 않습니다.
      */
     public async deleteFromMetadata(pageIdx: string): Promise<void> {
-        if (this.metadata && this.metadata[pageIdx]) {
-            let dir = join(
-                this.envConfig.saveDir!,
-                this.metadata[pageIdx].path,
-            );
-            try {
-                await fs.rm(dir, { recursive: true });
-                console.log('[metadataManager.ts] 파일 삭제 성공:', dir);
-            } catch (error) {
-                console.error('[metadataManager.ts] 파일 삭제 오류:', error);
+        // 메타데이터가 존재하며, 해당 pageIdx가 'Owner'가 아닌지 확인
+        if (this.metadata && pageIdx !== 'Owner' && this.metadata[pageIdx]) {
+            // 해당 pageIdx의 메타데이터가 PageMetadata 타입인지 확인
+            const pageData = this.metadata[pageIdx];
+            if (typeof pageData === 'object' && 'path' in pageData) {
+                let dir = join(this.envConfig.saveDir!, pageData.path);
+                try {
+                    await fs.rm(dir, { recursive: true });
+                    console.log('[metadataManager.ts] 파일 삭제 성공:', dir);
+                    // 메타데이터에서도 해당 항목 삭제
+                    delete this.metadata[pageIdx];
+                    // 변경사항을 메타데이터 파일에 반영
+                    await fs.writeFile(
+                        METADATA_FILE_PATH,
+                        JSON.stringify(this.metadata),
+                    );
+                } catch (error) {
+                    console.error(
+                        '[metadataManager.ts] 파일 삭제 오류:',
+                        error,
+                    );
+                }
             }
         }
     }

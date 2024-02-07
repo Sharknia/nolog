@@ -8,6 +8,9 @@ export class EnvConfig {
     public blogUrl: string | null = null;
     public saveDir: string | null = null;
     public saveSubDir: string | null = null;
+    public blogRepo: string | null = null;
+    public gitUserName: string | null = null;
+    public gitUserEmail: string | null = null;
 
     private constructor() {
         dotenv.config({ path: `${__dirname}/../../.env` });
@@ -16,6 +19,9 @@ export class EnvConfig {
         this.blogUrl = process.env.BLOG_URL || '';
         this.saveDir = process.env.SAVE_DIR || '';
         this.saveSubDir = process.env.SAVE_SUB_DIR || '';
+        this.blogRepo = process.env.BLOG_REPO || '';
+        this.gitUserName = process.env.GIT_USER_NAME || '';
+        this.gitUserEmail = process.env.GIT_USER_EMAIL || '';
 
         // If blogUrl ends with a slash, remove it
         if (this.blogUrl && this.blogUrl.endsWith('/')) {

@@ -1,8 +1,8 @@
 {
-  "name": "mynotionapi",
-  "version": "1.0.0",
+  "name": "nolog",
+  "version": "1.0.0-beta",
   "description": "Notion Database안에 들어있는 Page들을 Markdown 파일로 변환하는 것을 목표로 합니다.",
-  "main": "notionApi.js",
+  "main": "index.ts",
   "scripts": {
     "test": "jest"
   },

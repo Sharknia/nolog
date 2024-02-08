@@ -1,4 +1,4 @@
-name: Notion to Markdown
+name: NotionPress
 
 permissions:
     contents: write

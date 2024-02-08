@@ -1,4 +1,4 @@
-name: Nolog
+name: nolog
 
 permissions:
     contents: write

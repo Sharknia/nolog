@@ -266,9 +266,6 @@
   "NUM-127": {
     "path": "Typescript의-Testcode-맛보기"
   },
-  "NUM-84": {
-    "path": "동시성-제어문제-해결"
-  },
   "NUM-126": {
     "path": "Readme"
   },
@@ -277,5 +274,8 @@
   },
   "NUM-125": {
     "path": "NotionAPI를-활용한-자동-포스팅11"
+  },
+  "NUM-84": {
+    "path": "동시성-제어문제-해결"
   }
 }

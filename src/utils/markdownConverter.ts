@@ -325,6 +325,8 @@ export class MarkdownConverter {
         if (textElement.annotations.code) {
             textContent = `\`${textContent}\``;
         } else {
+            // 코드 블록이 아닌 경우에는 언더바 이스케이프 처리
+            textContent = this.escapeMarkdownUnderscores(textContent);
             if (textElement.annotations.bold) {
                 textContent = `**${textContent}**`;
             }
@@ -350,6 +352,11 @@ export class MarkdownConverter {
         }
 
         return leadingSpace + textContent + trailingSpace;
+    }
+
+    // 언더바 이스케이프 처리 함수
+    private escapeMarkdownUnderscores(text: string): string {
+        return text.replace(/(\w)_(\w)/g, '$1\\_$2');
     }
 
     private async createMarkdownLinkForPage(pageId: string): Promise<string> {

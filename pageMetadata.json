@@ -277,5 +277,8 @@
   },
   "NUM-84": {
     "path": "동시성-제어문제-해결"
+  },
+  "NUM-130": {
+    "path": "Sqlalchemy의-index"
   }
 }

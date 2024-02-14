@@ -26,9 +26,6 @@
   "NUM-94": {
     "path": "Sqlalchemy의-func"
   },
-  "NUM-85": {
-    "path": "PostgreSQL-Advisory-Locks-트랜잭션-레벨에서-구현"
-  },
   "NUM-81": {
     "path": "PynamoDB와-boto3-PynamoDB의-커넥션"
   },
@@ -283,5 +280,8 @@
   },
   "NUM-132": {
     "path": "위치-기반-검색-기능의-구현"
+  },
+  "NUM-85": {
+    "path": "PostgreSQL-Advisory-Locks-트랜잭션-레벨에서-구현"
   }
 }

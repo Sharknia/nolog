@@ -283,5 +283,8 @@
   },
   "NUM-85": {
     "path": "PostgreSQL-Advisory-Locks-트랜잭션-레벨에서-구현"
+  },
+  "NUM-131": {
+    "path": "SQLAlchemy-create_all-메소드로-데이터베이스-테이블-자동-생성하기"
   }
 }

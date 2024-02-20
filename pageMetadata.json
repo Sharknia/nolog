@@ -68,9 +68,6 @@
   "NUM-68": {
     "path": "vercel-배포-자동화"
   },
-  "NUM-67": {
-    "path": "FastAPI와-DDD"
-  },
   "NUM-66": {
     "path": "__post_init__"
   },
@@ -292,5 +289,8 @@
   },
   "NUM-138": {
     "path": "인앱결제에서-백엔드는-무엇을-준비해야-할까"
+  },
+  "NUM-67": {
+    "path": "FastAPI와-DDD"
   }
 }

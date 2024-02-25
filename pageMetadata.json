@@ -292,5 +292,8 @@
   },
   "NUM-67": {
     "path": "FastAPI와-DDD"
+  },
+  "NUM-143": {
+    "path": "arc-browser"
   }
 }

@@ -296,6 +296,9 @@
   "NUM-143": {
     "path": "arc-browser"
   },
+  "NUM-145": {
+    "path": "FastAPI-프로젝트의-시작"
+  },
   "NUM-144": {
     "path": "Apple-Silicon과-pyenv"
   }

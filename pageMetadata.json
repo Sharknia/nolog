@@ -295,5 +295,8 @@
   },
   "NUM-143": {
     "path": "arc-browser"
+  },
+  "NUM-144": {
+    "path": "Apple-Silicon과-pyenv"
   }
 }

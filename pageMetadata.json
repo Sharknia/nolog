@@ -299,10 +299,10 @@
   "NUM-145": {
     "path": "FastAPI-프로젝트의-시작"
   },
-  "NUM-147": {
-    "path": "Geocoder와-Reverse-Geocoder"
-  },
   "NUM-144": {
     "path": "Apple-Silicon과-pyenv"
+  },
+  "NUM-147": {
+    "path": "Geocoder와-Reverse-Geocoder"
   }
 }

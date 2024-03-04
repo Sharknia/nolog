@@ -304,5 +304,8 @@
   },
   "NUM-144": {
     "path": "Apple-Silicon과-pyenv"
+  },
+  "NUM-151": {
+    "path": "Postgresql의-JSON과-JSONB"
   }
 }

@@ -307,5 +307,8 @@
   },
   "NUM-151": {
     "path": "Postgresql의-JSON과-JSONB"
+  },
+  "NUM-152": {
+    "path": "SQLModel에서-unique_constraints-설정하기"
   }
 }

@@ -310,5 +310,8 @@
   },
   "NUM-152": {
     "path": "SQLModel에서-unique_constraints-설정하기"
+  },
+  "NUM-156": {
+    "path": "Supabase-Local-Dev-환경-꾸미기"
   }
 }

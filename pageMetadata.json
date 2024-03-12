@@ -311,6 +311,9 @@
   "NUM-152": {
     "path": "SQLModel에서-unique_constraints-설정하기"
   },
+  "NUM-157": {
+    "path": "Supabase와-Row-Level-Security-RLS"
+  },
   "NUM-156": {
     "path": "Supabase-Local-Dev-환경-꾸미기"
   }

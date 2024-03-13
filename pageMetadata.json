@@ -316,5 +316,8 @@
   },
   "NUM-156": {
     "path": "Supabase-Local-Dev-환경-꾸미기"
+  },
+  "NUM-158": {
+    "path": "Supabase-Local-개발-환경-꾸미기---DB-세팅"
   }
 }

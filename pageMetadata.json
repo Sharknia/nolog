@@ -322,5 +322,8 @@
   },
   "NUM-159": {
     "path": "Supabase-EdgeFunction---Deno-개발환경-꾸미기"
+  },
+  "NUM-161": {
+    "path": "Supabase-CLI-db-migration-이력-초기화하기"
   }
 }

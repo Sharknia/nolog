@@ -319,5 +319,8 @@
   },
   "NUM-158": {
     "path": "Supabase-Local-개발-환경-꾸미기---DB-세팅"
+  },
+  "NUM-159": {
+    "path": "Supabase-EdgeFunction---Deno-개발환경-꾸미기"
   }
 }

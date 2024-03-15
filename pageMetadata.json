@@ -325,5 +325,8 @@
   },
   "NUM-161": {
     "path": "Supabase-CLI-db-migration-이력-초기화하기"
+  },
+  "NUM-162": {
+    "path": "Postgresql-Function-Trigger-생성-쿼리문-확인하기"
   }
 }

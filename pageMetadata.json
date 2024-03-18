@@ -328,5 +328,8 @@
   },
   "NUM-162": {
     "path": "Postgresql-Function-Trigger-생성-쿼리문-확인하기"
+  },
+  "NUM-163": {
+    "path": "postgresql의-pg_jsonschema"
   }
 }

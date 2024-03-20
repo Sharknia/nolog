@@ -331,5 +331,8 @@
   },
   "NUM-163": {
     "path": "postgresql의-pg_jsonschema"
+  },
+  "NUM-166": {
+    "path": "PostgreSQL에서-테이블-로우를-JSON으로-변환하기"
   }
 }

@@ -334,5 +334,8 @@
   },
   "NUM-166": {
     "path": "PostgreSQL에서-테이블-로우를-JSON으로-변환하기"
+  },
+  "NUM-164": {
+    "path": "Postgresql에서-ENUM-타입에서-값-삭제하기"
   }
 }

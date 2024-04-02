@@ -340,5 +340,8 @@
   },
   "NUM-167": {
     "path": "RLS에-대한-궁금증-모음"
+  },
+  "NUM-169": {
+    "path": "Deno에서-URL의-쿼리-스트링Query-String-다루기"
   }
 }

@@ -343,5 +343,8 @@
   },
   "NUM-169": {
     "path": "Deno에서-URL의-쿼리-스트링Query-String-다루기"
+  },
+  "NUM-171": {
+    "path": "Supabase에서-뷰에도-RLS-적용하기"
   }
 }

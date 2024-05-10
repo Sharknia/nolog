@@ -349,5 +349,8 @@
   },
   "NUM-174": {
     "path": "Supabase를-위한-Bitbucket-Pipelines-CICD-워크플로우-구축하기"
+  },
+  "NUM-178": {
+    "path": "Pyenv-local-실행을-했는데-파이썬-버전이-바뀌지-않는다"
   }
 }

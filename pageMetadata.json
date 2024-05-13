@@ -355,5 +355,8 @@
   },
   "NUM-177": {
     "path": "Django-설치"
+  },
+  "NUM-179": {
+    "path": "docker-compose를-활용한-postgresql과-django-커넥션-만들기"
   }
 }

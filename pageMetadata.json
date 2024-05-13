@@ -358,5 +358,8 @@
   },
   "NUM-179": {
     "path": "docker-compose를-활용한-postgresql과-django-커넥션-만들기"
+  },
+  "NUM-181": {
+    "path": "Nextjs-소개와-설치-간단-예제"
   }
 }

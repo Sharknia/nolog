@@ -367,5 +367,8 @@
   },
   "NUM-183": {
     "path": "Django-Discord-소셜-회원가입-및-로그인-구현"
+  },
+  "NUM-186": {
+    "path": "Nextjs-Supabase-회원가입-구현"
   }
 }

@@ -353,9 +353,6 @@
   "NUM-178": {
     "path": "Pyenv-local-실행을-했는데-파이썬-버전이-바뀌지-않는다"
   },
-  "NUM-177": {
-    "path": "Django-설치"
-  },
   "NUM-179": {
     "path": "docker-compose를-활용한-postgresql과-django-커넥션-만들기"
   },
@@ -370,5 +367,11 @@
   },
   "NUM-186": {
     "path": "Nextjs-Supabase-회원가입-구현"
+  },
+  "NUM-187": {
+    "path": "Django-프로젝트에-Swagger-설정하기"
+  },
+  "NUM-177": {
+    "path": "Django-설치"
   }
 }

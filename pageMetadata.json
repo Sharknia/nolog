@@ -373,5 +373,8 @@
   },
   "NUM-177": {
     "path": "Django-설치"
+  },
+  "NUM-188": {
+    "path": "Django-Rest-Framework에서-JWT를-이용한-사용자-인증-구현"
   }
 }

@@ -376,5 +376,8 @@
   },
   "NUM-188": {
     "path": "Django-Rest-Framework에서-JWT를-이용한-사용자-인증-구현"
+  },
+  "NUM-189": {
+    "path": "Django의-Serializers"
   }
 }

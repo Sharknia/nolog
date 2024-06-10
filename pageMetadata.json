@@ -391,5 +391,8 @@
   },
   "NUM-196": {
     "path": "AWS-활용-테스트-서버-구현-1"
+  },
+  "NUM-197": {
+    "path": "Private-subnet-안에-있는-EC2-instance에-Access-하기"
   }
 }

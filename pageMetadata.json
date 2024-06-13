@@ -392,7 +392,7 @@
   "NUM-196": {
     "path": "AWS-활용-테스트-서버-구현-1"
   },
-  "NUM-197": {
-    "path": "Private-subnet-안에-있는-EC2-instance에-Access-하기"
+  "NUM-198": {
+    "path": "AWS에서-EC2-인스턴스-생성-및-Visual-Studio-Code로-원격-연결하기"
   }
 }

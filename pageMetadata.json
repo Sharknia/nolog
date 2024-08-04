@@ -394,5 +394,8 @@
   },
   "NUM-198": {
     "path": "AWS에서-EC2-인스턴스-생성-및-Visual-Studio-Code로-원격-연결하기"
+  },
+  "NUM-204": {
+    "path": "Install-Tailwind-CSS-with-Nextjs"
   }
 }

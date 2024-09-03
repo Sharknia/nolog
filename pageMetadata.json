@@ -410,10 +410,10 @@
   "NUM-192": {
     "path": "Go를-활용한-OAuth-20-구현"
   },
-  "NUM-211": {
-    "path": "KotlinSpring-프로젝트-설치-및-실행"
-  },
   "NUM-204": {
     "path": "Install-Tailwind-CSS-with-Nextjs"
+  },
+  "NUM-211": {
+    "path": "KotlinSpring-프로젝트-설치-및-실행"
   }
 }

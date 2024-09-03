@@ -395,14 +395,8 @@
   "NUM-209": {
     "path": "Ubuntu-DLNA-서버-설정"
   },
-  "NUM-204": {
-    "path": "Install-Tailwind-CSS-with-Nextjs"
-  },
   "NUM-186": {
     "path": "Nextjs-Supabase-회원가입-구현"
-  },
-  "NUM-211": {
-    "path": "KotlinSpring-프로젝트-설치-및-실행"
   },
   "NUM-210": {
     "path": "GitHub-Container-Registry-vs-Docker-Hub"
@@ -415,5 +409,11 @@
   },
   "NUM-192": {
     "path": "Go를-활용한-OAuth-20-구현"
+  },
+  "NUM-211": {
+    "path": "KotlinSpring-프로젝트-설치-및-실행"
+  },
+  "NUM-204": {
+    "path": "Install-Tailwind-CSS-with-Nextjs"
   }
 }

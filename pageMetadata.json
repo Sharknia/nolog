@@ -365,9 +365,6 @@
   "NUM-183": {
     "path": "Django-Discord-소셜-회원가입-및-로그인-구현"
   },
-  "NUM-186": {
-    "path": "Nextjs-Supabase-회원가입-구현"
-  },
   "NUM-187": {
     "path": "Django-프로젝트에-Swagger-설정하기"
   },
@@ -395,10 +392,13 @@
   "NUM-198": {
     "path": "AWS에서-EC2-인스턴스-생성-및-Visual-Studio-Code로-원격-연결하기"
   },
+  "NUM-209": {
+    "path": "Ubuntu-DLNA-서버-설정"
+  },
   "NUM-204": {
     "path": "Install-Tailwind-CSS-with-Nextjs"
   },
-  "NUM-209": {
-    "path": "Ubuntu-DLNA-서버-설정"
+  "NUM-186": {
+    "path": "Nextjs-Supabase-회원가입-구현"
   }
 }

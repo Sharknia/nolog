@@ -418,5 +418,8 @@
   },
   "NUM-213": {
     "path": "SDKMAN과-bootRun"
+  },
+  "NUM-214": {
+    "path": "Kotlin에서의-GET-API-선언-후-Swagger-설정-하기"
   }
 }

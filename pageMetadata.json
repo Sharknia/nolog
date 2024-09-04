@@ -415,5 +415,8 @@
   },
   "NUM-211": {
     "path": "KotlinSpring-프로젝트-설치-및-실행"
+  },
+  "NUM-213": {
+    "path": "SDKMAN과-bootRun"
   }
 }

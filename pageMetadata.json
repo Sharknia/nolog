@@ -421,5 +421,8 @@
   },
   "NUM-214": {
     "path": "Kotlin에서의-GET-API-선언-후-Swagger-설정-하기"
+  },
+  "NUM-216": {
+    "path": "N1-문제"
   }
 }

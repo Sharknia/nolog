@@ -433,5 +433,8 @@
   },
   "NUM-220": {
     "path": "Django의-관리자-페이지-만들기"
+  },
+  "NUM-221": {
+    "path": "Django의-startapp"
   }
 }

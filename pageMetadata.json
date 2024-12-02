@@ -437,6 +437,9 @@
   "NUM-221": {
     "path": "Django의-startapp"
   },
+  "NUM-224": {
+    "path": "Docker에서-Python-환경-변수-관리"
+  },
   "NUM-222": {
     "path": "SD-카드-기반-디스크-오류-및-해결-과정"
   }

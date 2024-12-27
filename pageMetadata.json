@@ -445,8 +445,5 @@
   },
   "NUM-225": {
     "path": "Python-Mocking시-patch-경로-문제-해결하기"
-  },
-  "NUM-227": {
-    "path": "FastAPI의-의존성-주입Dependency-Injection"
   }
 }

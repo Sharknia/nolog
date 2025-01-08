@@ -451,5 +451,11 @@
   },
   "NUM-227": {
     "path": "FastAPI의-의존성-주입Dependency-Injection"
+  },
+  "NUM-229": {
+    "path": "Typescript의-얇은-복사-vs-깊은-복사"
+  },
+  "NUM-173": {
+    "path": "supabase-custom-claims를-활용한-관리자-권한-관리"
   }
 }

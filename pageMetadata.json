@@ -463,5 +463,8 @@
   },
   "NUM-231": {
     "path": "React-Native의-프로젝트-구조와-화면-이동-구현하기"
+  },
+  "NUM-232": {
+    "path": "React-Native-Navigation과-Paper-기본부터-사용하기"
   }
 }

@@ -460,5 +460,8 @@
   },
   "NUM-230": {
     "path": "React-Native-설치"
+  },
+  "NUM-231": {
+    "path": "React-Native의-프로젝트-구조와-화면-이동-구현하기"
   }
 }

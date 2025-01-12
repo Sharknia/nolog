@@ -457,5 +457,8 @@
   },
   "NUM-173": {
     "path": "supabase-custom-claims를-활용한-관리자-권한-관리"
+  },
+  "NUM-230": {
+    "path": "React-Native-설치"
   }
 }

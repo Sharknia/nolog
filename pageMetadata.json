@@ -466,5 +466,8 @@
   },
   "NUM-232": {
     "path": "React-Native-Navigation과-Paper-기본부터-사용하기"
+  },
+  "NUM-234": {
+    "path": "GraphQL과-Django"
   }
 }

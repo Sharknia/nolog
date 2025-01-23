@@ -469,5 +469,8 @@
   },
   "NUM-234": {
     "path": "GraphQL과-Django"
+  },
+  "NUM-236": {
+    "path": "우리-팀에-맞는-API-Gateway-선택하기"
   }
 }

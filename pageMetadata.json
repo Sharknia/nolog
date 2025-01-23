@@ -472,5 +472,8 @@
   },
   "NUM-236": {
     "path": "우리-팀에-맞는-API-Gateway-선택하기"
+  },
+  "NUM-237": {
+    "path": "Elastic-APM"
   }
 }

@@ -475,5 +475,8 @@
   },
   "NUM-237": {
     "path": "Elastic-APM"
+  },
+  "NUM-238": {
+    "path": "GraphQL과-Django-2"
   }
 }

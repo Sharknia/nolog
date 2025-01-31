@@ -478,5 +478,8 @@
   },
   "NUM-238": {
     "path": "GraphQL과-Django-2"
+  },
+  "NUM-240": {
+    "path": "Deepseek-R1-로컬-설치"
   }
 }

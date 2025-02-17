@@ -484,5 +484,11 @@
   },
   "NUM-241": {
     "path": "uv-간단-소개-및-적용"
+  },
+  "NUM-243": {
+    "path": "Nginx를-활용한-Reverse-Proxy-구현2"
+  },
+  "NUM-242": {
+    "path": "Nginx를-활용한-Reverse-Proxy-구현1"
   }
 }

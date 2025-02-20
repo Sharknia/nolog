@@ -496,5 +496,8 @@
   },
   "NUM-244": {
     "path": "poetry를-활용해-안정적으로-package-업데이트하기"
+  },
+  "NUM-246": {
+    "path": "Ruff"
   }
 }

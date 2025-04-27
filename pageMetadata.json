@@ -508,5 +508,8 @@
   },
   "NUM-253": {
     "path": "오라클-서버-https-인증서-설치하기"
+  },
+  "NUM-254": {
+    "path": "prepared-statement-does-not-exist-오류"
   }
 }

@@ -514,5 +514,8 @@
   },
   "NUM-253": {
     "path": "오라클-서버-https-인증서-설치하기"
+  },
+  "NUM-260": {
+    "path": "Django와-MySQL에서-DB-Sleep으로-인한-Hang-문제-해결-방안"
   }
 }

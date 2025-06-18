@@ -515,13 +515,16 @@
   "NUM-253": {
     "path": "오라클-서버-https-인증서-설치하기"
   },
-  "NUM-260": {
-    "path": "Django와-MySQL에서-DB-Sleep으로-인한-Hang-문제-해결-방안"
-  },
   "NUM-261": {
     "path": "DataLoader의-적용"
   },
+  "NUM-260": {
+    "path": "Django와-MySQL에서-DB-Sleep으로-인한-Hang-문제-해결-방안"
+  },
   "NUM-259": {
     "path": "분산된-모놀리스를-위한-관리자-페이지-시스템-설계-제안"
+  },
+  "NUM-258": {
+    "path": "Django-모델에서-GraphQL-스키마-자동-생성"
   }
 }

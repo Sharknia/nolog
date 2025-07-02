@@ -509,9 +509,6 @@
   "NUM-255": {
     "path": "Ubuntu-서버에서-메모리-사용량-확인-및-스왑-설정으로-안정성-높이기"
   },
-  "NUM-254": {
-    "path": "prepared-statement-does-not-exist-오류"
-  },
   "NUM-253": {
     "path": "오라클-서버-https-인증서-설치하기"
   },
@@ -535,5 +532,8 @@
   },
   "NUM-265": {
     "path": "PyMySQL-소개"
+  },
+  "NUM-254": {
+    "path": "prepared-statement-does-not-exist-오류"
   }
 }

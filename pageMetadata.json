@@ -535,5 +535,11 @@
   },
   "NUM-254": {
     "path": "prepared-statement-does-not-exist-오류"
+  },
+  "NUM-270": {
+    "path": "Cloudflare-Workers-꾸미기"
+  },
+  "NUM-266": {
+    "path": "Django-프로젝트의-DTO-도입"
   }
 }

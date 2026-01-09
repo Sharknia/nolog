@@ -547,5 +547,8 @@
   },
   "NUM-278": {
     "path": "Vercel-Functions-CPU-사용량-줄이는-법"
+  },
+  "NUM-279": {
+    "path": "Vercel의-캐싱-구조-이해하기"
   }
 }
